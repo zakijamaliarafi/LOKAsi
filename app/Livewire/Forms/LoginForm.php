@@ -38,6 +38,18 @@ class LoginForm extends Form
             ]);
         }
 
+        // Retrieve the authenticated user
+        $user = Auth::user();
+
+        // Check if the user has the 'login' permission
+        if (!$user->hasRole('user|contributor|coordinator|admin')) {
+            Auth::logout(); // Optional: logout the user immediately
+
+            throw ValidationException::withMessages([
+                'form.email' => 'Your account has not been approved by the admin. Please wait for an email notification.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

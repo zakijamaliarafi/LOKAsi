@@ -67,5 +67,16 @@ new #[Layout('layouts.guest')] class extends Component
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <!-- Register link -->
+        <div class="flex items-center justify-end mt-4 mr-2">
+            <p class="text-sm text-gray-900">
+                Dont have an account? 
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}" wire:navigate>
+                    {{ __('Register now') }}
+                </a>
+            </p>
+            
+        </div>
     </form>
 </div>
