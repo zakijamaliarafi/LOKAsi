@@ -12,6 +12,8 @@ new class extends Component {
 
     public $creating = false;
 
+    public ?User $editing = null;
+
     public function mount(): void
     {
         $this->getUser();
@@ -33,22 +35,37 @@ new class extends Component {
 
     #[On('user-add-canceled')]
     #[On('user-added')]
-    public function disableForm(): void
+    public function disableAddForm(): void
     {
         $this->creating = false;
         $this->getUser();
     }
 
-    public function addUserRole(User $user): void
+    public function edit(User $user): void
     {
-        $user->removeRole('none');
-        $user->assignRole('user');
+        $this->editing = $user;
 
         $this->getUser();
-
-        // dispatch UserApproved event
-        UserApproved::dispatch($user);
     }
+
+    #[On('user-updated')]
+    #[On('user-update-cancelled')]
+    public function disableEditForm(): void
+    {
+        $this->editing = null;
+        $this->getUser();
+    }
+
+    // public function addUserRole(User $user): void
+    // {
+    //     $user->removeRole('none');
+    //     $user->assignRole('user');
+
+    //     $this->getUser();
+
+    //     // dispatch UserApproved event
+    //     UserApproved::dispatch($user);
+    // }
 
     public function deleteUser(User $user): void
     {
@@ -90,7 +107,7 @@ new class extends Component {
                                 <th class="py-1 px-2 w-2/12">Role</th>
                                 <th class="py-1 px-2 w-2/12">Email</th>
                                 <th class="py-1 px-2 w-2/12">Address</th>
-                                <th class="py-1 px-2 w-1/12">Action</th>
+                                <th class="py-1 px-2 w-1/12">Edit</th>
                                 <th class="py-1 px-2 w-1/12">Delete</th>
                             </tr>
                         </thead>
@@ -101,12 +118,14 @@ new class extends Component {
                                     <td>{{ $user->roles->pluck('name')->join(', ')}}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->address }}</td>
-                                    @if($user->hasRole('none'))
-                                        <td class="text-center">
-                                            <button wire:click="addUserRole({{$user->id}})">approve as user</button>
-                                        </td>
+                                    @if($user->is($editing))
+                                    <td>
+                                        <livewire:user.edit :user="$user" :key="$user->id" />
+                                    </td>
                                     @else
-                                    <td></td>
+                                    <td class="text-center">
+                                        <button wire:click="edit({{$user->id}})">edit role</button>
+                                    </td>
                                     @endif
                                     <td class="text-center">
                                         <button wire:click="deleteUser({{$user->id}})">delete</button>
