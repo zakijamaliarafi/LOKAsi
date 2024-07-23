@@ -20,6 +20,8 @@ new class extends Component {
     public function getUser(): void
     {
         $this->users = User::with('roles')
+            ->where('deleted', false)
+            ->where('id', '!=', auth()->id())
             ->latest()
             ->get();
     }
@@ -39,12 +41,22 @@ new class extends Component {
 
     public function addUserRole(User $user): void
     {
+        $user->removeRole('none');
         $user->assignRole('user');
 
         $this->getUser();
 
         // dispatch UserApproved event
         UserApproved::dispatch($user);
+    }
+
+    public function deleteUser(User $user): void
+    {
+        $user->update([
+            'deleted' => true,
+        ]);
+
+        $this->getUser();
     }
 
 }; ?>
@@ -78,7 +90,8 @@ new class extends Component {
                                 <th class="py-1 px-2 w-2/12">Role</th>
                                 <th class="py-1 px-2 w-2/12">Email</th>
                                 <th class="py-1 px-2 w-2/12">Address</th>
-                                <th class="py-1 px-2 w-2/12">Action</th>
+                                <th class="py-1 px-2 w-1/12">Action</th>
+                                <th class="py-1 px-2 w-1/12">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +108,9 @@ new class extends Component {
                                     @else
                                     <td></td>
                                     @endif
+                                    <td class="text-center">
+                                        <button wire:click="deleteUser({{$user->id}})">delete</button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

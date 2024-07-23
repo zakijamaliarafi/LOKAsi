@@ -41,9 +41,18 @@ class LoginForm extends Form
         // Retrieve the authenticated user
         $user = Auth::user();
 
+        // Check if the user is marked as 'deleted'
+        if ($user->deleted) {
+            Auth::logout(); // Logout the user immediately
+
+            throw ValidationException::withMessages([
+                'form.email' => 'Your account is no longer active. Please contact support.',
+            ]);
+        }
+
         // Check if the user has the 'login' permission
         if (!$user->hasRole('user|contributor|coordinator|admin')) {
-            Auth::logout(); // Optional: logout the user immediately
+            Auth::logout(); // Logout the user immediately
 
             throw ValidationException::withMessages([
                 'form.email' => 'Your account has not been approved by the admin. Please wait for an email notification.',
