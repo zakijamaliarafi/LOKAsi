@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Events\UserApproved;
 use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
 
@@ -16,12 +17,17 @@ new class extends Component {
         ]);
 
         $previousRole = $this->user->roles->pluck('name')[0];
-        
+
         $this->user->removeRole($previousRole);
 
         $this->user->assignRole($this->role);
 
         $this->dispatch('user-updated');
+
+        if ($previousRole === 'none' && $this->role === 'user') {
+            // dispatch UserApproved event
+            UserApproved::dispatch($this->user);
+        }
     }
 
     public function cancel(): void
@@ -35,7 +41,6 @@ new class extends Component {
     <form wire:submit="update">
         <select wire:model="role" id="role" name="role" required>
             <option value="none">None</option>
-            <option value="admin">Administrator</option>
             <option value="coordinator">Coordinator</option>
             <option value="contributor">Contributor</option>
             <option value="user">User</option>

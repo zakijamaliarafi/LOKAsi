@@ -78,7 +78,6 @@ new class extends Component {
         <x-input-label for="role" :value="__('Role')" />
         <select wire:model="role" id="role" class="block mt-1 w-full" name="role" required>
             <option value="none">None</option>
-            <option value="admin">Administrator</option>
             <option value="coordinator">Coordinator</option>
             <option value="contributor">Contributor</option>
             <option value="user">User</option>

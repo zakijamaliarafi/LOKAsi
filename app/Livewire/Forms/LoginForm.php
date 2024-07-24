@@ -41,8 +41,8 @@ class LoginForm extends Form
         // Retrieve the authenticated user
         $user = Auth::user();
 
-        // Check if the user is marked as 'deleted'
-        if ($user->deleted) {
+        // Check if the user is marked as 'suspend'
+        if ($user->suspend) {
             Auth::logout(); // Logout the user immediately
 
             throw ValidationException::withMessages([
