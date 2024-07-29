@@ -45,7 +45,7 @@ new class extends Component {
     <form wire:submit="update">
         <select wire:model="role" id="role" name="role" required>
             <option value="none">None</option>
-            <option value="coordinator" selected>Coordinator</option>
+            <option value="coordinator">Coordinator</option>
             <option value="contributor">Contributor</option>
             <option value="user">User</option>
         </select>
