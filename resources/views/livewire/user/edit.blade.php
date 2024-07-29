@@ -7,8 +7,12 @@ use Livewire\Volt\Component;
 
 new class extends Component {
     public User $user;
+    public string $role;
 
-    public string $role = 'none';
+    public function mount(): void
+    {
+        $this->role = $this->user->roles->pluck('name')[0];
+    }
 
     public function update(): void
     {
@@ -24,7 +28,7 @@ new class extends Component {
 
         $this->dispatch('user-updated');
 
-        if ($previousRole === 'none' && $this->role === 'user') {
+        if ($previousRole === 'none' && $this->role !== 'none') {
             // dispatch UserApproved event
             UserApproved::dispatch($this->user);
         }
