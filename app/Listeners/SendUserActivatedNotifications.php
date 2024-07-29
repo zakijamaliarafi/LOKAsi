@@ -2,12 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\UserApproved;
-use App\Notifications\ApproveUser;
+use App\Events\UserActivated;
+use App\Notifications\ActivateUser;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendUserApprovedNotifications implements ShouldQueue
+class SendUserActivatedNotifications implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -20,8 +20,8 @@ class SendUserApprovedNotifications implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(UserApproved $event): void
+    public function handle(UserActivated $event): void
     {
-        $event->user->notify(new ApproveUser($event->user));
+        $event->user->notify(new ActivateUser($event->user));
     }
 }

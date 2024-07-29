@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ApproveUser extends Notification
+class SuspendUser extends Notification
 {
     use Queueable;
 
@@ -36,10 +36,9 @@ class ApproveUser extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject("Your account has been approved!")
-                    ->greeting("Account for {$this->user->name} has been approved!")
-                    ->line('Login to website to start using your account.')
-                    ->action('Login', url('http://127.0.0.1:8000/login'));
+                    ->subject("Your account has been suspended!")
+                    ->greeting("account for {$this->user->name} has been suspended!")
+                    ->line('Your account has been suspended due to violation of terms and conditions.');
     }
 
     /**
