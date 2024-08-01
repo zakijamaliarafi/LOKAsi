@@ -34,32 +34,32 @@ Route::get('location/manage', function () {
 
 // View Hostelry map
 Route::view('map/hostelry', 'map.hostelry')
-    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
     ->name('map.hostelry');
 
 // View culinary map
 Route::view('map/culinary', 'map.culinary')
-    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
     ->name('map.culinary');
 
 // View schools map
 Route::view('map/schools', 'map.schools')
-    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
     ->name('map.schools');
 
 // View office map
 Route::view('map/office', 'map.office')
-    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
     ->name('map.office');
 
 // View worship map
 Route::view('map/worship', 'map.worship')
-    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
     ->name('map.worship');
 
 // test map
 Route::view('map/test', 'map.test')
-    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
     ->name('map.test');
 
 require __DIR__.'/auth.php';

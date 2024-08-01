@@ -29,6 +29,14 @@ class UserSeeder extends Seeder
         // ]);
         // $coordinator->assignRole('coordinator');
 
+        $curator = User::create([
+            'name' => 'Curator',
+            'email' => 'curator@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'password' => bcrypt('12345678'),
+        ]);
+        $curator->assignRole('curator');
+
         // $contributor = User::create([
         //     'name' => 'Contributor',
         //     'email' => 'contributor@gmail.com',

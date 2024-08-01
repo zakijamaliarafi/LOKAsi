@@ -31,6 +31,7 @@ class RolePermissionSeeder extends Seeder
 
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'coordinator']);
+        Role::create(['name' => 'curator']);
         Role::create(['name' => 'contributor']);
         Role::create(['name' => 'user']);
         Role::create(['name' => 'none']);
@@ -56,6 +57,13 @@ class RolePermissionSeeder extends Seeder
             'delete-location',
             'show-location',
             'verify-report',
+            'login'
+        ]);
+
+        $roleCurator = Role::findByName('curator');
+        $roleCurator->givePermissionTo([
+            'verify-report',
+            'show-location',
             'login'
         ]);
 

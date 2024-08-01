@@ -46,6 +46,7 @@ new class extends Component {
         <select wire:model="role" id="role" name="role" required>
             <option value="none">None</option>
             <option value="coordinator">Coordinator</option>
+            <option value="curator">Curator</option>
             <option value="contributor">Contributor</option>
             <option value="user">User</option>
         </select>
