@@ -57,4 +57,9 @@ Route::view('map/worship', 'map.worship')
     ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
     ->name('map.worship');
 
+// test map
+Route::view('map/test', 'map.test')
+    ->middleware(['auth'], 'role:user|contributor|coordinator|admin')
+    ->name('map.test');
+
 require __DIR__.'/auth.php';
