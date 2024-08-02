@@ -51,7 +51,7 @@ class LoginForm extends Form
         }
 
         // Check if the user has the 'login' permission
-        if (!$user->hasRole('user|contributor|coordinator|admin')) {
+        if (!$user->hasRole('user|contributor|curator|coordinator|admin')) {
             Auth::logout(); // Logout the user immediately
 
             throw ValidationException::withMessages([

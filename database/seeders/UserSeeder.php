@@ -29,13 +29,17 @@ class UserSeeder extends Seeder
         // ]);
         // $coordinator->assignRole('coordinator');
 
-        // $contributor = User::create([
-        //     'name' => 'Contributor',
-        //     'email' => 'contributor@gmail.com',
-        //     'address' => 'Pabuaran, Purwokerto Utara',
-        //     'password' => bcrypt('12345678'),
-        // ]);
-        // $contributor->assignRole('contributor');
+        $curator = User::create([
+            'name' => 'Curator',
+            'email' => 'curator@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'password' => bcrypt('12345678'),
+        ]);
+        $curator->assignRole('curator');
+
+        User::factory()->count(39)->create()->each(function ($user) {
+            $user->assignRole('contributor');
+        });
 
         $user = User::create([
             'name' => 'Zaki Jamali Arafi',
