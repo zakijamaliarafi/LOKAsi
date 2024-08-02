@@ -77,6 +77,12 @@ new class extends Component
                         {{ __('Manage User') }}
                     </x-nav-link>
                     @endrole
+
+                    @role('curator|coordinator')
+                    <x-nav-link :href="route('verify')" :active="request()->routeIs('verify')" wire:navigate>
+                        {{ __('Verify Report') }}
+                    </x-nav-link>
+                    @endrole
                 </div>
             </div>
 

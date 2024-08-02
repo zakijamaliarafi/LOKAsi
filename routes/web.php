@@ -27,6 +27,16 @@ Route::view('user/manage', 'user')
     ->middleware(['auth', 'role:admin'])
     ->name('user.manage');
 
+// Verify Report page
+Route::view('verify', 'verify')
+    ->middleware(['auth', 'role:curator|coordinator'])
+    ->name('verify');
+
+// view verify report
+Route::view('verify/view', 'view-verify')
+    ->middleware(['auth', 'role:curator|coordinator'])
+    ->name('verify.view');
+
 // Manage Location page
 Route::get('location/manage', function () {
     return 'This page for manage location';
