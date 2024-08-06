@@ -49,25 +49,22 @@ new class extends Component
                             </x-slot>
         
                             <x-slot name="content">
-                                <x-dropdown-link :href="route('map.hostelry')" wire:navigate>
-                                    {{ __('Hostelry') }}
-                                </x-dropdown-link>
+                                @if(request()->routeIs('map'))
+                                <button onclick="category_selected('penginapan');" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Hostelry</button>
+                                <button onclick="category_selected('kuliner');" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Culinary</button>
+                                <button onclick="category_selected('education');" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Schools</button>
+                                <button onclick="category_selected('office');" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Office</button>
+                                <button onclick="category_selected('tempatibadah');" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Place of worship</button>
+                                @else
 
-                                <x-dropdown-link :href="route('map.culinary')" wire:navigate>
-                                    {{ __('Culinary') }}
-                                </x-dropdown-link>
-        
-                                <x-dropdown-link :href="route('map.schools')" wire:navigate>
-                                    {{ __('Schools') }}
-                                </x-dropdown-link>
+                                <a href="map?category=penginapan" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Hostelry</a>
+                                <a href="map?category=kuliner" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Culinary</a>
+                                <a href="map?category=education" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Schools</a>
+                                <a href="map?category=office" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Office</a>
+                                <a href="map?category=tempatibadah" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Place of worship</a>
 
-                                <x-dropdown-link :href="route('map.office')" wire:navigate>
-                                    {{ __('Office') }}
-                                </x-dropdown-link>
+                                @endif
                                 
-                                <x-dropdown-link :href="route('map.worship')" wire:navigate>
-                                    {{ __('Place of Worship') }}
-                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
