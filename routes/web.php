@@ -42,34 +42,9 @@ Route::get('location/manage', function () {
     return 'This page for manage location';
 })->middleware(['auth', 'role:coordinator|admin']);
 
-// View Hostelry map
-Route::view('map/hostelry', 'map.hostelry')
+// Map
+Route::view('map', 'map')
     ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
-    ->name('map.hostelry');
-
-// View culinary map
-Route::view('map/culinary', 'map.culinary')
-    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
-    ->name('map.culinary');
-
-// View schools map
-Route::view('map/schools', 'map.schools')
-    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
-    ->name('map.schools');
-
-// View office map
-Route::view('map/office', 'map.office')
-    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
-    ->name('map.office');
-
-// View worship map
-Route::view('map/worship', 'map.worship')
-    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
-    ->name('map.worship');
-
-// test map
-Route::view('map/test', 'map.test')
-    ->middleware(['auth'], 'role:user|contributor|curator|coordinator|admin')
-    ->name('map.test');
+    ->name('map');
 
 require __DIR__.'/auth.php';
