@@ -6,7 +6,7 @@ use App\Models\PA;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ReportSeeder extends Seeder
+class ReportPASeeder extends Seeder
 {
     /**
      * Run the database seeds.
