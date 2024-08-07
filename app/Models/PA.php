@@ -23,6 +23,8 @@ class PA extends Model
      * @var array
      */
     protected $fillable = [
+        'status',
+        'reject_reason',
         'street_name',
         'street_name_status',
         'house_number',
@@ -30,12 +32,10 @@ class PA extends Model
         'house_number_update',
         'latitude',
         'longitude',
-        'status',
         'curator_id',
         'claim_id',
         'claim_time_start',
         'claim_time_end',
         'curate_time',
-        'curate_note',
     ];
 }
