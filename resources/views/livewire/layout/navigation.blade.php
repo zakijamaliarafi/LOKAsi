@@ -76,7 +76,7 @@ new class extends Component
                     @endrole
 
                     @role('curator|coordinator')
-                    <x-nav-link :href="route('verify')" :active="request()->routeIs('verify')" wire:navigate>
+                    <x-nav-link :href="route('verify.pa')" :active="request()->routeIs('verify.pa')" wire:navigate>
                         {{ __('Verify Report') }}
                     </x-nav-link>
                     @endrole

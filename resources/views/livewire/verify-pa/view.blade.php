@@ -22,7 +22,7 @@ new class extends Component {
         $claimId = Session::get('current_claim_id');
         
         if(is_null($claimId)) {
-            redirect()->route('verify');
+            redirect()->route('verify.pa');
         }
 
         $report = PA::oldest('id')
@@ -44,9 +44,9 @@ new class extends Component {
 
                 Session::forget('current_claim_id');
 
-                redirect()->route('verify');
+                redirect()->route('verify.pa');
             }else{
-                redirect()->route('verify');
+                redirect()->route('verify.pa');
             }
         }
 

@@ -53,7 +53,7 @@ new class extends Component {
     {
         Session::put('current_claim_id', $claimId);
 
-        redirect()->route('verify.view');
+        redirect()->route('verify.pa.view');
     }
 
 }; ?>

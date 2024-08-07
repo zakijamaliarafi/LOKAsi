@@ -27,15 +27,25 @@ Route::view('user/manage', 'user')
     ->middleware(['auth', 'role:admin'])
     ->name('user.manage');
 
-// Verify Report page
-Route::view('verify', 'verify')
+// Verify PA Report page
+Route::view('verify/pa', 'verify-pa')
     ->middleware(['auth', 'role:curator|coordinator'])
-    ->name('verify');
+    ->name('verify.pa');
 
-// view verify report
-Route::view('verify/view', 'view-verify')
+// view verify PA report
+Route::view('verify/pa/view', 'verify-pa-view')
     ->middleware(['auth', 'role:curator|coordinator'])
-    ->name('verify.view');
+    ->name('verify.pa.view');
+
+// Verify POI Report page
+Route::view('verify/poi', 'verify-poi')
+    ->middleware(['auth', 'role:curator|coordinator'])
+    ->name('verify.poi');
+
+// view verify POI report
+Route::view('verify/poi/view', 'verify-poi-view')
+    ->middleware(['auth', 'role:curator|coordinator'])
+    ->name('verify.poi.view');
 
 // Manage Location page
 Route::get('location/manage', function () {

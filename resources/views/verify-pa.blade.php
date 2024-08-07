@@ -6,12 +6,12 @@
     </x-slot>
 
     <div class="flex justify-between my-10 mx-5">
-        <livewire:verify.info />
-        <livewire:verify.claim />
+        <livewire:verify-pa.info />
+        <livewire:verify-pa.claim />
     </div>
 
     <div>
-        <livewire:verify.list />
+        <livewire:verify-pa.list />
     </div>
     
 </x-app-layout>
