@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Report;
+use App\Models\PA;
 use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
@@ -17,15 +17,15 @@ new class extends Component {
     #[On('claim-request')]
     public function getInfo(): void
     {
-        $this->acceptedCount = Report::where('status', 'accepted')
+        $this->acceptedCount = PA::where('status', 'accepted')
             ->where('curator_id', Auth::id())
             ->count();
 
-        $this->rejectedCount = Report::where('status', 'rejected')
+        $this->rejectedCount = PA::where('status', 'rejected')
             ->where('curator_id', Auth::id())
             ->count();
 
-        $this->claimedCount = Report::whereNotNull('claim_id')
+        $this->claimedCount = PA::whereNotNull('claim_id')
             ->where('curator_id', Auth::id())
             ->count();
     }

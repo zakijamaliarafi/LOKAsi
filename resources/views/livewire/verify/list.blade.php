@@ -14,7 +14,7 @@ new class extends Component {
     #[On('claim-request')]
     public function getInfo(): void
     {
-        $this->claimedData = DB::table('reports')
+        $this->claimedData = DB::table('reports_pa')
             ->select('claim_id', 'claim_time_start',
                 DB::raw('SUM(CASE WHEN status = "accepted" THEN 1 ELSE 0 END) as accepted_count'),
                 DB::raw('SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as rejected_count')
