@@ -19,6 +19,7 @@ new class extends Component {
                 DB::raw('SUM(CASE WHEN status = "accepted" THEN 1 ELSE 0 END) as accepted_count'),
                 DB::raw('SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as rejected_count')
             )
+            ->where('curator_id', auth()->id())
             ->whereNotNull('claim_id')
             ->groupBy('claim_id', 'claim_time_start')
             ->get();
