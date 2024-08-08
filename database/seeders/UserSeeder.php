@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'address' => 'Head Office',
+            'phone' => '081234567890',
             'password' => bcrypt('12345678'),
         ]);
         $admin->assignRole('admin');
@@ -25,6 +26,7 @@ class UserSeeder extends Seeder
             'name' => 'Coordinator',
             'email' => 'coordinator@gmail.com',
             'address' => 'Head Office',
+            'phone' => '081234567890',
             'password' => bcrypt('12345678'),
         ]);
         $coordinator->assignRole('coordinator');
@@ -33,6 +35,7 @@ class UserSeeder extends Seeder
             'name' => 'Curator',
             'email' => 'curator@gmail.com',
             'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
             'password' => bcrypt('12345678'),
         ]);
         $curator->assignRole('curator');
@@ -45,6 +48,7 @@ class UserSeeder extends Seeder
             'name' => 'Zaki Jamali Arafi',
             'email' => 'zakijamaliarafi@gmail.com',
             'address' => 'Desa Melung RT 02 RW 02',
+            'phone' => '081234567890',
             'password' => bcrypt('12345678'),
         ]);
         $user->assignRole('user');
