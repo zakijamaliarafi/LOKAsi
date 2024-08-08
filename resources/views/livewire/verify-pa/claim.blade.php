@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Report;
+use App\Models\PA;
 use Livewire\Volt\Component;
 
 new class extends Component {
@@ -9,12 +9,12 @@ new class extends Component {
     
     public function mount(): void
     {
-        $this->hasPendingData = Report::where('curator_id', Auth::id())
+        $this->hasPendingData = PA::where('curator_id', Auth::id())
             ->whereNotNull('claim_id')
             ->whereNull('claim_time_end')
             ->exists();
 
-        $latestClaim = Report::where('curator_id', Auth::id())
+        $latestClaim = PA::where('curator_id', Auth::id())
             ->whereNotNull('claim_id')
             ->orderBy('claim_time_start', 'desc')
             ->first();
@@ -25,18 +25,19 @@ new class extends Component {
 
     public function claim(): void
     {
-        $claimedData = Report::latest('id')->whereNull('claim_id')->take(10)->get();
+        $claimedData = PA::oldest('id')->whereNull('claim_id')->take(10)->get();
 
         if ($claimedData->isEmpty()) {
             // warning message
         } else {
             $this->claimId = Str::ulid()->toBase32();
             $curatorId = Auth::id();
+            $startTime = now();
 
             foreach ($claimedData as $data) {
                 $data->update([
                     'claim_id' => $this->claimId,
-                    'claim_time_start' => now(),
+                    'claim_time_start' => $startTime,
                     'curator_id' => Auth::id(),
                 ]);
             }
@@ -52,7 +53,7 @@ new class extends Component {
     {
         Session::put('current_claim_id', $claimId);
 
-        redirect()->route('verify.view');
+        redirect()->route('verify.pa.view');
     }
 
 }; ?>

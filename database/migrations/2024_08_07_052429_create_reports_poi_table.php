@@ -11,20 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('reports_poi', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->string('name');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->string('reject_reason')->nullable();
+            $table->string('location_name');
+            $table->string('location_address')->nullable();
+            $table->string('category')->nullable();
             $table->string('latitude', 20);
             $table->string('longitude', 20);
-            $table->foreignId('contributor_id')->constrained(table: 'users')->onUpdate('cascade');
+            $table->string('image_path');
             $table->datetime('input_time');
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
-            $table->foreignId('curator_id')->nullable()->constrained(table: 'users')->onUpdate('cascade');
             $table->ulid('claim_id')->nullable();
             $table->datetime('claim_time_start')->nullable();
             $table->datetime('claim_time_end')->nullable();
             $table->datetime('curate_time')->nullable();
-            $table->string('curate_note')->nullable();
+            $table->foreignId('contributor_id')->constrained(table: 'users')->onUpdate('cascade');
+            $table->foreignId('curator_id')->nullable()->constrained(table: 'users')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -34,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('reports_poi');
     }
 };

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Report;
+use App\Models\POI;
 use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
@@ -14,22 +14,21 @@ new class extends Component {
         $this->getInfo();
     }
 
-    #[On('claim-request')]
+    #[On('claim-poi-request')]
     public function getInfo(): void
     {
-        $this->acceptedCount = Report::where('status', 'accepted')
+        $this->acceptedCount = POI::where('status', 'accepted')
             ->where('curator_id', Auth::id())
             ->count();
 
-        $this->rejectedCount = Report::where('status', 'rejected')
+        $this->rejectedCount = POI::where('status', 'rejected')
             ->where('curator_id', Auth::id())
             ->count();
 
-        $this->claimedCount = Report::whereNotNull('claim_id')
+        $this->claimedCount = POI::whereNotNull('claim_id')
             ->where('curator_id', Auth::id())
             ->count();
     }
-
 }; ?>
 
 <div>

@@ -11,20 +11,20 @@ new class extends Component {
         $this->getInfo();
     }
 
-    #[On('claim-request')]
+    #[On('claim-poi-request')]
     public function getInfo(): void
     {
-        $this->claimedData = DB::table('reports')
+        $this->claimedData = DB::table('reports_poi')
             ->select('claim_id', 'claim_time_start',
                 DB::raw('SUM(CASE WHEN status = "accepted" THEN 1 ELSE 0 END) as accepted_count'),
                 DB::raw('SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as rejected_count')
             )
+            ->where('curator_id', auth()->id())
             ->whereNotNull('claim_id')
             ->groupBy('claim_id', 'claim_time_start')
             ->get();
     }
 }; ?>
-
 
 <div class="pt-4">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

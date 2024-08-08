@@ -57,11 +57,11 @@ new class extends Component
                                 <button onclick="category_selected('tempatibadah');" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Place of worship</button>
                                 @else
 
-                                <a href="map?category=penginapan" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Hostelry</a>
-                                <a href="map?category=kuliner" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Culinary</a>
-                                <a href="map?category=education" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Schools</a>
-                                <a href="map?category=office" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Office</a>
-                                <a href="map?category=tempatibadah" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Place of worship</a>
+                                <a href="/map?category=penginapan" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Hostelry</a>
+                                <a href="/map?category=kuliner" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Culinary</a>
+                                <a href="/map?category=education" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Schools</a>
+                                <a href="/map?category=office" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Office</a>
+                                <a href="/map?category=tempatibadah" class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out">Place of worship</a>
 
                                 @endif
                                 
@@ -76,9 +76,31 @@ new class extends Component
                     @endrole
 
                     @role('curator|coordinator')
-                    <x-nav-link :href="route('verify')" :active="request()->routeIs('verify')" wire:navigate>
-                        {{ __('Verify Report') }}
-                    </x-nav-link>
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div x-data="{{ json_encode(['name' => 'Verify Report']) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+        
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+        
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('verify.poi')" wire:navigate>
+                                    {{ __('Verify POI') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('verify.pa')" wire:navigate>
+                                    {{ __('Verify Point Addressing') }}
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                     @endrole
                 </div>
             </div>

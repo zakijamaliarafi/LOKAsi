@@ -21,13 +21,13 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('admin');
 
-        // $coordinator = User::create([
-        //     'name' => 'Coordinator',
-        //     'email' => 'coordinator@gmail.com',
-        //     'address' => 'Head Office',
-        //     'password' => bcrypt('12345678'),
-        // ]);
-        // $coordinator->assignRole('coordinator');
+        $coordinator = User::create([
+            'name' => 'Coordinator',
+            'email' => 'coordinator@gmail.com',
+            'address' => 'Head Office',
+            'password' => bcrypt('12345678'),
+        ]);
+        $coordinator->assignRole('coordinator');
 
         $curator = User::create([
             'name' => 'Curator',
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
         ]);
         $curator->assignRole('curator');
 
-        User::factory()->count(39)->create()->each(function ($user) {
+        User::factory()->count(5)->create()->each(function ($user) {
             $user->assignRole('contributor');
         });
 
