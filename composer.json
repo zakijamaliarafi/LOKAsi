@@ -13,7 +13,9 @@
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
+        "itsgoingd/clockwork": "^5.2",
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
