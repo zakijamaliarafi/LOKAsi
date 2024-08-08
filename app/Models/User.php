@@ -50,4 +50,9 @@ class User extends Authenticatable
 
     // The User model requires this trait
     use HasRoles;
+
+    public function pois()
+    {
+        return $this->hasMany(POI::class);
+    }
 }
