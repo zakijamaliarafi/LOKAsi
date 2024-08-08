@@ -121,7 +121,7 @@ new #[Layout('layouts.guest')] class extends Component
             </div>
     
             <div class="mt-8">
-                <x-primary-button class="w-full h-16">
+                <x-primary-button class="w-full h-16 text-xl rounded-md">
                     {{ __('Sign Up') }}
                 </x-primary-button>
             </div>
