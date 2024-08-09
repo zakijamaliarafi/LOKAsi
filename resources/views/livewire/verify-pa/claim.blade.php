@@ -60,14 +60,14 @@ new class extends Component {
 
 <div>
     @if($hasPendingData)
-        <div class="bg-white w-96 px-5 py-5">
-            <p class="mb-10">View data to verify report</p>
-            <x-primary-button wire:click="view('{{ $claimId }}')">View Data</x-primary-button>
+        <div class="bg-flash-white w-96 px-5 py-5 rounded-lg">
+            <p class="text-lg text-indigo font-bold mb-10">List data to verify report</p>
+            <x-primary-button wire:click="view('{{ $claimId }}')" class="text-lg text-white rounded-lg">List Data</x-primary-button>
         </div>
     @else
-        <div class="bg-white w-96 px-5 py-5">
-            <p class="mb-10">Claim data to start verify report</p>
-            <x-primary-button wire:click="claim()">Claim Data</x-primary-button>
+        <div class="bg-flash-white w-96 px-5 py-5 rounded-lg">
+            <p class="text-lg text-indigo font-bold mb-10">Request data to start verify report</p>
+            <x-primary-button wire:click="claim()" class="text-lg text-white rounded-lg">Request Data</x-primary-button>
         </div>
     @endif
 

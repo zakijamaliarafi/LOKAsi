@@ -134,19 +134,19 @@ new class extends Component {
 
 <div class="flex">
     <div class="w-1/2">
-        <div class="h-96 w-full bg-white">
+        <div class="w-full bg-white">
             <form wire:submit.prevent>
-                <div class="pt-5 pl-10 text-xl">
-                    Report From: {{ $data->contributor->name }}
+                <div class="mt-2 pl-10">
+                    <span class="text-xl text-indigo font-bold">Report From:</span> <span class="text-xl text-gray-700">{{ $data->contributor->name }}</span>
                 </div>
     
-                <div class="pt-2 pl-10 text-lg">
-                    Location name: {{ $data->location_name }}
+                <div class="pt-2 pl-10">
+                    <span class="text-lg text-indigo font-bold">Location name:</span> <span class="text-lg text-gray-700">{{ $data->location_name }}</span> 
                 </div>
     
-                <div class="pt-2 pl-10 text-lg">
-                    <label for="location_address" class="block">Location Address</label>
-                    <input id="location_address" type="text" wire:model="LocationAddress">
+                <div class="pt-2 pl-10">
+                    <label for="location_address" class="block text-lg text-indigo font-bold">Location Address</label>
+                    <input id="location_address" type="text" wire:model="LocationAddress" class="h-8 w-80 text-base">
                 </div>
                 <div class="pl-10 text-red-500">
                     @error('LocationAddress')
@@ -154,9 +154,9 @@ new class extends Component {
                     @enderror
                 </div>
     
-                <div class="pl-10 pt-2 text-lg">
-                    <label for="option" class="block">Category</label>
-                    <select id="option" wire:model="category">
+                <div class="ml-10 mt-2">
+                    <label for="option" class="block text-lg text-indigo font-bold">Category</label>
+                    <select id="option" wire:model="category" class="h-10 w-80">
                         <option value="">none</option>
                         <option value="Accounting, Tax Preparation, Bookkeeping, and Payroll Services">Accounting, Tax Preparation, Bookkeeping, and Payroll Services</option>
                         <option value="Amusement Parks and Arcades">Amusement Parks and Arcades</option>
@@ -242,9 +242,9 @@ new class extends Component {
                     @enderror
                 </div>
 
-                <div class="pl-10 pt-2 text-lg">
-                    <label for="option" class="block">Select reject reason:</label>
-                    <select id="option" wire:model="rejectReason">
+                <div class="ml-10 mt-2">
+                    <label for="option" class="block text-lg text-indigo">Select reject reason:</label>
+                    <select id="option" wire:model="rejectReason" class="h-10 w-80">
                         <option value="">none</option>
                         <option value="BAD QUALITY PHOTO">BAD QUALITY PHOTO</option>
                         <option value="PHOTO ROTATE MORE THAN 45°">PHOTO ROTATE MORE THAN 45°</option>
@@ -261,20 +261,20 @@ new class extends Component {
                     @enderror
                 </div>
     
-                <div class="pl-10 pt-2 text-xl">
-                    <x-primary-button type="button" wire:click="accept">Accept</x-primary-button>
-                    <x-secondary-button type="button" wire:click="reject">Reject</x-secondary-button>
+                <div class="pl-10 pt-2 pb-5">
+                    <x-primary-button type="button" wire:click="accept" class="text-base rounded-lg px-2 py-1">Accept</x-primary-button>
+                    <x-secondary-button type="button" wire:click="reject" class="text-base rounded-lg px-5 py-3">Reject</x-secondary-button>
                 </div>
             </form>
         </div>
 
-        <div class="h-56 w-full">
+        <div class="h-60 w-full">
             <div id="map" class="h-full"></div>
         </div>
 
     </div>
 
-    <div class="w-1/">
+    <div class="w-1/2 flex justify-center">
         <img class="h-[26rem]" src="{{ asset('storage/' . $data->image_path)}}" alt="">
     </div>
     

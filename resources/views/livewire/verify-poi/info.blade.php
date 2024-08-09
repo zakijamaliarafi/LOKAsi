@@ -33,16 +33,16 @@ new class extends Component {
 
 <div>
     <div class="flex gap-x-5">
-        <div class="px-2 py-2 bg-white">
-            <p>Total Accepted</p>
+        <div class="px-2 py-2 bg-flash-white rounded-lg">
+            <p class="text-md text-indigo font-bold">Total Accepted</p>
             <p>{{$acceptedCount}}</p>
         </div>
-        <div class="px-2 py-2 bg-white">
-            <p>Total Rejected</p>
+        <div class="px-2 py-2 bg-flash-white rounded-lg">
+            <p class="text-md text-indigo font-bold">Total Rejected</p>
             <p>{{$rejectedCount}}</p>
         </div>
-        <div class="px-2 py-2 bg-white">
-            <p>Total Claimed</p>
+        <div class="px-2 py-2 bg-flash-white rounded-lg">
+            <p class="text-md text-indigo font-bold">Total Claimed</p>
             <p>{{$claimedCount}}</p>
         </div>
     </div>

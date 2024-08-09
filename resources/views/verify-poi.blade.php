@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-2xl text-indigo leading-tight">
             {{ __('Verify Report Point of Interest') }}
         </h2>
     </x-slot>

@@ -19,7 +19,7 @@
     </head>
     <body class="font-poppins text-gray-900 antialiased">
         <div class="min-h-screen flex flex-row">
-            @if(request()->routeIs('login', 'register', 'password.request'))
+            @if(isset($image))
             <div class="w-1/2">
                 {{ $image }}
             </div>
