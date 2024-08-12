@@ -16,12 +16,9 @@ new class extends Component {
 }; ?>
 
 
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="h-[40rem]">
-            <div id="map" class="h-full"></div>
-        </div>
-    </div>
+
+<div class="h-[calc(100vh-6rem)] w-[calc(100vw-13rem)] m-2">
+    <div id="map" class="h-full"></div>
 </div>
 
 <script src="{{ asset('js/config.js') }}"></script>

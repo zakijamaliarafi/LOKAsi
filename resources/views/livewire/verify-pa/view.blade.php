@@ -149,14 +149,14 @@ new class extends Component {
 <div class="flex">
     <div class="h-screen w-1/2 bg-white">
         <form wire:submit.prevent>
-            <div class="pt-10 pl-10 text-2xl">
+            <div class="pt-10 pl-10 text-2xl text-indigo font-bold">
                 Address Information
             </div>
             <div class="pt-5 pl-10 text-xl">
                 @if(is_null($data->street_name))
                     -
                 @else
-                    Street name: {{ $data->street_name }}
+                    <span class="text-indigo font-bold">Street name:</span> <span class="text-gray-700">{{ $data->street_name }}</span>
                 @endif
             </div>
             <div class="pl-10">
@@ -177,7 +177,7 @@ new class extends Component {
                 @if(is_null($data->house_number))
                     -
                 @else
-                    Number: {{ $data->house_number }}
+                <span class="text-indigo font-bold">Number:</span> <span class="text-gray-700">{{ $data->house_number }}</span>
                 @endif
             </div>
             <div class="pl-10">
@@ -195,8 +195,8 @@ new class extends Component {
             </div>
 
             <div class="pt-5 pl-10 text-xl">
-                <label for="number_update" class="block">Update Number</label>
-                <input id="number_update" type="text" wire:model="houseNumberUpdate">
+                <label for="number_update" class="block text-indigo font-bold">Update Number</label>
+                <input id="number_update" type="text" wire:model="houseNumberUpdate" class="h-8 w-48">
             </div>
             <div class="pl-10 text-red-500">
                 @error('houseNumberUpdate')
@@ -205,8 +205,8 @@ new class extends Component {
             </div>
         
             <div class="pl-10 pt-5 text-xl">
-                <label for="option" class="block">Select reject reason:</label>
-                <select id="option" wire:model="rejectReason">
+                <label for="option" class="block text-indigo font-bold">Select reject reason:</label>
+                <select id="option" wire:model="rejectReason" class="h-10 w-48">
                     <option value="">none</option>
                     <option value="no streetview">no streetview</option>
                     <option value="no number">no number</option>
@@ -220,8 +220,8 @@ new class extends Component {
             </div>
 
             <div class="pl-10 pt-5 text-xl">
-                <x-primary-button type="button" wire:click="accept">Accept</x-primary-button>
-                <x-secondary-button type="button" wire:click="reject">Reject</x-secondary-button>
+                <x-primary-button type="button" wire:click="accept" class="text-base rounded-lg px-2 py-1">Accept</x-primary-button>
+                <x-secondary-button type="button" wire:click="reject" class="text-base rounded-lg px-5 py-3">Reject</x-secondary-button>
             </div>
         </form>
     </div>

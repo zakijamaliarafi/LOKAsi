@@ -27,6 +27,11 @@ Route::view('user/manage', 'user')
     ->middleware(['auth', 'role:admin'])
     ->name('user.manage');
 
+// Report page
+Route::view('report', 'report')
+    ->middleware(['auth', 'role:contributor'])
+    ->name('report');
+
 // Verify PA Report page
 Route::view('verify/pa', 'verify-pa')
     ->middleware(['auth', 'role:curator|coordinator'])

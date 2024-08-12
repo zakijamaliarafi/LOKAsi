@@ -28,12 +28,12 @@ new class extends Component {
 
 <div class="pt-4">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-flash-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
-                <p class="text-xl font-bold">Data</p>
+                <p class="text-xl text-indigo font-bold">Data</p>
                 <table class="text-left">
                     <thead>
-                        <tr>
+                        <tr class="text-indigo font-semibold">
                             <th class="py-1 w-1/6">No</th>
                             <th class="py-1 w-2/6">Claim Time</th>
                             <th class="py-1 w-1/6">Accepted Data</th>
@@ -43,10 +43,10 @@ new class extends Component {
                     <tbody>
                         @foreach($claimedData as $data)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->claim_time_start }}</td>
-                                <td>{{ $data->accepted_count }}</td>
-                                <td>{{ $data->rejected_count }}</td>
+                                <td class="text-indigo">{{ $loop->iteration }}</td>
+                                <td class="text-indigo">{{ $data->claim_time_start }}</td>
+                                <td class="text-green-700">{{ $data->accepted_count }} Accepted</td>
+                                <td class="text-red-700">{{ $data->rejected_count }} Rejected</td>
                             </tr>
                         @endforeach
                     </tbody>
