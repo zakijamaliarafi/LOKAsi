@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'address' => 'Head Office',
             'phone' => '081234567890',
             'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
         ]);
         $admin->assignRole('admin');
 
@@ -28,6 +29,7 @@ class UserSeeder extends Seeder
             'address' => 'Head Office',
             'phone' => '081234567890',
             'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
         ]);
         $coordinator->assignRole('coordinator');
 
@@ -37,6 +39,7 @@ class UserSeeder extends Seeder
             'address' => 'Pabuaran, Purwokerto Utara',
             'phone' => '081234567890',
             'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
         ]);
         $curator->assignRole('curator');
 
@@ -50,6 +53,7 @@ class UserSeeder extends Seeder
             'address' => 'Desa Melung RT 02 RW 02',
             'phone' => '081234567890',
             'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
         ]);
         $user->assignRole('user');
     }
