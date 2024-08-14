@@ -46,10 +46,15 @@ Route::middleware(['auth', 'approved'])->group(function () {
         ->middleware(['role:curator|coordinator'])
         ->name('verify.poi.view');
 
-    // Manage Location page
-    Route::get('location/manage', function () {
-        return 'This page for manage location';
-    })->middleware(['role:coordinator|admin']);
+    // // Manage Location page
+    // Route::get('location/manage', function () {
+    //     return 'This page for manage location';
+    // })->middleware(['role:coordinator|admin']);
+
+    // Manage Project page
+    Route::view('project/manage', 'project')
+        ->middleware('role:coordinator')
+        ->name('project.manage');
 
     // Map
     Route::view('map', 'map')

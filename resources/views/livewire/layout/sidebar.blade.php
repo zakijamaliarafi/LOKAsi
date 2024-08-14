@@ -22,7 +22,7 @@ new class extends Component
     </div>
 
     <nav x-data="{ open: false }">
-        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="my-5">
+        <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="my-5" wire:navigate>
             <div class="flex pl-4 items-center gap-2">
                 <img class="h-6" src="{{ asset('img/home-icon.svg')}}" alt="">
                 {{__('Home')}}
@@ -30,7 +30,7 @@ new class extends Component
         </x-nav-link>
 
         @role('admin')
-        <x-nav-link :href="route('user.manage')" :active="request()->routeIs('user.manage')" class="my-5">
+        <x-nav-link :href="route('user.manage')" :active="request()->routeIs('user.manage')" class="my-5" wire:navigate>
             <div class="flex justify-center items-center gap-2">
                 <img class="h-8" src="{{ asset('img/manage-user-icon.svg')}}" alt="">
                 {{__('Manage User')}}
@@ -38,8 +38,17 @@ new class extends Component
         </x-nav-link>
         @endrole
 
+        @role('coordinator')
+        <x-nav-link :href="route('project.manage')" :active="request()->routeIs('project.manage')" class="my-5" wire:navigate>
+            <div class="flex justify-center items-center">
+                <img class="h-8" src="{{ asset('img/project-icon.svg')}}" alt="">
+                {{ __('Manage Project') }}
+            </div>
+        </x-nav-link>
+        @endrole
+
         @role('contributor')
-        <x-nav-link :href="route('report')" :active="request()->routeIs('report')" class="my-5">
+        <x-nav-link :href="route('report')" :active="request()->routeIs('report')" class="my-5" wire:navigate>
             <div class="flex pl-4 items-center gap-2">
                 <img class="h-8" src="{{ asset('img/report-icon.svg')}}" alt="">
                 {{__('Report')}}
