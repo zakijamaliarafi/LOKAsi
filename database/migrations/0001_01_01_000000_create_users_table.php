@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('address');
             $table->string('phone');
+            $table->string('role_request')->nullable();
+            $table->string('comunity')->nullable();
             $table->boolean('suspend')->default(false);
             $table->rememberToken();
             $table->timestamps();

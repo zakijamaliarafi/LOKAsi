@@ -1,11 +1,11 @@
 <?php
 
 use App\Models\User;
-use App\Events\UserRegistered;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -17,6 +17,8 @@ new #[Layout('layouts.guest')] class extends Component
     public string $phone = '';
     public string $password = '';
     public string $password_confirmation = '';
+    public string $role_request = 'viewer';
+    public ?string $comunity = null;
 
     /**
      * Handle an incoming registration request.
@@ -29,6 +31,8 @@ new #[Layout('layouts.guest')] class extends Component
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
             'phone' => ['required', 'numeric'],
             'address' => ['required', 'string', 'max:255'],
+            'role_request' => ['required'],
+            'comunity' => [Rule::requiredIf($this->role_request === 'contributor')],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -37,11 +41,10 @@ new #[Layout('layouts.guest')] class extends Component
 
         $user->assignRole('none');
 
-        // dispatch UserRegistered event
-        UserRegistered::dispatch($user);
+        Auth::login($user);
 
-        // redirect to waiting page
-        $this->redirect(route('waiting'), navigate: true);
+        // redirect to email verification
+        $this->redirect(route('verification.notice'), navigate: true);
     }
 }; ?>
 
@@ -93,7 +96,7 @@ new #[Layout('layouts.guest')] class extends Component
             <!-- Phone Number -->
             <div class="mt-4">
                 <x-input-label class="text-lg font-medium text-dim-gray mb-2" for="phone" :value="__('Phone number')" />
-                <x-text-input wire:model="phone" id="phone" class="block mt-1 w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" type="number" name="phone" required autocomplete="phone" />
+                <x-text-input wire:model="phone" id="phone" class="block mt-1 w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" type="tel" pattern="\d{10,13}" required autocomplete="phone" />
                 <x-input-error :messages="$errors->get('phone')" class="mt-2" />
             </div>
     
@@ -118,6 +121,27 @@ new #[Layout('layouts.guest')] class extends Component
                                 name="password_confirmation" required autocomplete="new-password" />
     
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            </div>
+
+            <div x-data="{ show:false }">
+                <div class="mt-4">
+                    <x-input-label class="text-lg font-medium text-dim-gray mb-2" for="role_request" :value="__('Sign up as')" />
+                    <select id="role_request" wire:model="role_request" x-on:change="show = $event.target.value === 'contributor'" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="viewer">Viewer</option>
+                        <option value="contributor">Contributor</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('role_request')" class="mt-2" />
+                </div>
+    
+                <div class="mt-4" x-show="show">
+                    <x-input-label class="text-lg font-medium text-dim-gray mb-2" for="comunity" :value="__('comunity')" />
+                    <select id="comunity" wire:model="comunity" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="">none</option>
+                        <option value="comunity 1">Comunity 1</option>
+                        <option value="comunity 2">Comunity 2</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('comunity')" class="mt-2" />
+                </div>
             </div>
     
             <div class="mt-8">
