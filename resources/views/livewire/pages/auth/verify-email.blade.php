@@ -29,7 +29,7 @@ new #[Layout('layouts.guest')] class extends Component
 <x-slot:image>
     <div class="bg-pastel-blue h-full relative">
         <div class="h-full flex justify-center items-center">
-            <img class="w-[28rem] h-[28rem]" src="{{ asset('img/guest-map.png')}}" alt="">
+            <img class="w-[28rem] h-[28rem]" src="{{ asset('img/guest-mail.png')}}" alt="">
         </div>
         <div class="absolute bottom-2 left-2">
             <p class="text-sm text-white">Copyright © 2024 PT Antasena Terra Solution. All rights reserved.</p>

@@ -48,7 +48,7 @@ new class extends Component {
             <option value="coordinator">Coordinator</option>
             <option value="curator">Curator</option>
             <option value="contributor">Contributor</option>
-            <option value="user">User</option>
+            <option value="user">Viewer</option>
         </select>
         <x-primary-button>{{ __('Save') }}</x-primary-button>
         <button wire:click.prevent="cancel">Cancel</button>    

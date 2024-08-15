@@ -81,7 +81,7 @@ new class extends Component {
             <option value="coordinator">Coordinator</option>
             <option value="curator">Curator</option>
             <option value="contributor">Contributor</option>
-            <option value="user">User</option>
+            <option value="user">Viewer</option>
         </select>
         <x-input-error :messages="$errors->get('role')" class="mt-2" />
     </div>

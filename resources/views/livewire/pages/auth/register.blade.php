@@ -137,8 +137,9 @@ new #[Layout('layouts.guest')] class extends Component
                     <x-input-label class="text-lg font-medium text-dim-gray mb-2" for="comunity" :value="__('comunity')" />
                     <select id="comunity" wire:model="comunity" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                         <option value="">none</option>
-                        <option value="comunity 1">Comunity 1</option>
-                        <option value="comunity 2">Comunity 2</option>
+                        <option value="Antasena Map Comunity">Antasena Map Comunity</option>
+                        <option value="Antasena Map Universe">Antasena Map Univ</option>
+                        <option value="Antasena Map Study Club">Antasena Map Study Club</option>                        
                     </select>
                     <x-input-error :messages="$errors->get('comunity')" class="mt-2" />
                 </div>
