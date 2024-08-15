@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContributorMonthlyPOIReport;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Carbon;
 use Livewire\Volt\Component;
@@ -46,14 +49,52 @@ new class extends Component {
         // dd($this->result);
     }
 
+    public function send(){
+        $csvData = fopen('php://temp', 'r+');
+        fputcsv($csvData, ['Contributor', 'Input Data', 'Accepted Data', 'Rejected Data', 'Pending Data']);
+        foreach ($this->result as $data) {
+            fputcsv($csvData, [$data->contributor_name, $data->total_reports, $data->accepted_count, $data->rejected_count, $data->pending_count]); 
+        }
+        rewind($csvData);
+        $csvOutput = stream_get_contents($csvData);
+        fclose($csvData);
+
+        $csvData2 = fopen('php://temp', 'r+');
+        fputcsv($csvData2, ['ID', 'Status', 'Reject Reason', 'Location Name', 'Location Address', 'Category', 'latitude', 'longitude', 'image', 'Input Time', 'Contributor', 'Curate Time', 'Curator']);
+        $dateObj = Carbon::createFromFormat('Y-m', $this->date);
+        $poiData = DB::table('reports_poi')
+            ->leftjoin('users as curators', 'reports_poi.curator_id', '=', 'curators.id')
+            ->join('users as contributors', 'reports_poi.contributor_id', '=', 'contributors.id')
+            ->whereYear('reports_poi.created_at', $dateObj->year)
+            ->whereMonth('reports_poi.created_at', $dateObj->month)
+            ->select(
+                'reports_poi.*',
+                'curators.name as curator_name',
+                'contributors.name as contributor_name'
+            )
+            ->get();
+        
+        foreach ($poiData as $poi) {
+            fputcsv($csvData2, [$poi->id, $poi->status, $poi->reject_reason, $poi->location_name, $poi->location_address, $poi->category, $poi->latitude, $poi->longitude, $poi->image_path, $poi->input_time, $poi->contributor_name, $poi->curate_time, $poi->curator_name]); 
+        }
+        rewind($csvData2);
+        $csvOutput2 = stream_get_contents($csvData2);
+        fclose($csvData2);
+
+        Mail::to('lokasi.terra@gmail.com')->send(new ContributorMonthlyPOIReport($csvOutput, $csvOutput2));
+    }
+
 }; ?>
 
 
 <div class="mt-5">
-    <form>
-        <label for="date" class="text-indigo font-semibold">Contributor Report</label>
-        <input type="month" id="date" wire:model.change="date">
-    </form>
+    <div class="flex justify-between">
+        <form>
+            <label for="date" class="text-indigo font-semibold">Contributor Report</label>
+            <input type="month" id="date" wire:model.change="date">
+        </form>
+        <button wire:click="send" class="inline-flex items-center justify-center px-4 py-1.5 bg-green-500 border border-transparent font-medium text-white rounded-lg tracking-widest hover:bg-green-400 hover:text-white focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Send Data</button>
+    </div>
     <div class="bg-flash-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
         <div class="p-4 text-gray-900">
             <table class="text-left">
