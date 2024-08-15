@@ -28,13 +28,14 @@ new class extends Component {
 
 <div class="pt-4">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-flash-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-                <p class="text-xl text-indigo font-bold">Data</p>
-                <table class="text-left">
+        <p class="text-2xl text-indigo font-bold">Data</p>
+        <div class="overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="px-0 text-gray-900">
+                
+                <table class="text-left border-separate border-spacing-x-0 border-spacing-y-2">
                     <thead>
-                        <tr class="text-indigo font-semibold">
-                            <th class="py-1 w-1/6">No</th>
+                        <tr class="text-indigo font-semibold bg-flash-white">
+                            <th class="py-1 pl-5 w-1/6">No</th>
                             <th class="py-1 w-2/6">Claim Time</th>
                             <th class="py-1 w-1/6">Accepted Data</th>
                             <th class="py-1 w-1/6">Rejected Data</th>
@@ -42,11 +43,11 @@ new class extends Component {
                     </thead>
                     <tbody>
                         @foreach($claimedData as $data)
-                            <tr>
-                                <td class="text-indigo">{{ $loop->iteration }}</td>
-                                <td class="text-indigo">{{ $data->claim_time_start }}</td>
-                                <td class="text-green-700">{{ $data->accepted_count }} Accepted</td>
-                                <td class="text-red-700">{{ $data->rejected_count }} Rejected</td>
+                            <tr class="bg-white shadow-md">
+                                <td class="text-indigo pl-5 py-1">{{ $loop->iteration }}</td>
+                                <td class="text-indigo py-1">{{ $data->claim_time_start }}</td>
+                                <td class="text-green-700 py-1">{{ $data->accepted_count }} Accepted</td>
+                                <td class="text-red-700 py-1">{{ $data->rejected_count }} Rejected</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -50,33 +50,35 @@ new class extends Component {
     </div>
     
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-flash-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-                <p class="text-xl text-indigo font-bold">Data</p>
-                <table class="text-left">
+        <p class="text-2xl text-indigo font-bold mb-1">Report Data</p>
+        <div class="mb-10 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="px-0 text-gray-900">
+                <table class="text-left border-separate border-spacing-x-0 border-spacing-y-2">
                     <thead>
-                        <tr class="text-indigo font-semibold">
-                            <th class="py-1 w-1/12">No</th>
+                        <tr class="text-indigo font-semibold bg-flash-white">
+                            <th class="py-1 pl-5 w-1/12">No</th>
                             <th class="py-1 w-2/12">Location name</th>
                             <th class="py-1 w-2/12">Input time</th>
+                            <th class="py-1 w-2/12">Curate time</th>
                             <th class="py-1 w-1/12">Status</th>
                             <th class="py-1 w-2/12">Reject reason</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($reportData as $data)
-                            <tr>
-                                <td class="text-indigo">{{ $loop->iteration }}</td>
-                                <td class="text-indigo">{{ $data->location_name }}</td>
-                                <td class="text-indigo">{{ $data->input_time }}</td>
+                            <tr class="bg-white shadow-md">
+                                <td class="text-indigo pl-5 py-1">{{ $loop->iteration }}</td>
+                                <td class="text-indigo py-1">{{ $data->location_name }}</td>
+                                <td class="text-indigo py-1">{{ $data->input_time }}</td>
+                                <td class="text-indigo py-1">{{ $data->curate_time}}</td>
                                 @if($data->status == 'accepted')
-                                    <td class="text-green-700">{{ $data->status }}</td>
+                                    <td class="text-green-700 py-1">{{ $data->status }}</td>
                                 @elseif($data->status == 'rejected')
-                                    <td class="text-red-700">{{ $data->status }}</td>
+                                    <td class="text-red-700 py-1">{{ $data->status }}</td>
                                 @else
-                                    <td class="text-yellow-400">{{ $data->status }}</td>
+                                    <td class="text-yellow-400 py-1">{{ $data->status }}</td>
                                 @endif
-                                <td class="text-indigo">{{ $data->reject_reason }}</td>
+                                <td class="text-indigo py-1">{{ $data->reject_reason }}</td>
                             </tr>
                         @endforeach
                     </tbody>

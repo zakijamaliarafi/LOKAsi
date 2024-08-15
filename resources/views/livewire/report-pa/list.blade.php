@@ -86,13 +86,13 @@ new class extends Component {
                 </div>
             </div>
         </div>
-        <div class="bg-flash-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">
-                <p class="text-xl text-indigo font-bold">Data</p>
-                <table class="text-left">
+        <p class="text-2xl text-indigo font-bold">Data</p>
+        <div class="overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="px-0 text-gray-900">
+                <table class="text-left border-separate border-spacing-x-0 border-spacing-y-2">
                     <thead>
-                        <tr class="text-indigo font-semibold">
-                            <th class="py-1 px-2">No</th>
+                        <tr class="text-indigo font-semibold bg-flash-white">
+                            <th class="py-1 px-2 pl-5">No</th>
                             <th class="py-1 px-2">Curator</th>
                             <th class="py-1 px-2">Last activity</th>
                             <th class="py-1 px-2">Accepted Data</th>
@@ -102,8 +102,8 @@ new class extends Component {
                     <tbody>
                         @if(!is_null($result))
                             @foreach($result as $data)
-                                <tr>
-                                    <td class="text-indigo py-1 px-2">{{ $loop->iteration }}</td>
+                                <tr class="bg-white shadow-md">
+                                    <td class="text-indigo py-1 px-2 pl-5">{{ $loop->iteration }}</td>
                                     <td class="text-indigo py-1 px-2">{{ $data->curator_name }}</td>
                                     <td class="text-indigo py-1 px-2">{{ $data->latest_claim_time_end }}</td>
                                     <td class="text-green-700 py-1 px-2 text-center">{{ $data->accepted_count }}</td>
