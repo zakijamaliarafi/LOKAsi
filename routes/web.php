@@ -21,6 +21,21 @@ Route::middleware(['auth', 'approved'])->group(function () {
         ->middleware(['role:admin'])
         ->name('user.manage');
 
+    // Manage Project page
+    Route::view('project/manage', 'project')
+        ->middleware('role:coordinator')
+        ->name('project.manage');
+
+    // Report POI page
+    Route::view('report/poi', 'report-poi')
+        ->middleware(['role:coordinator'])
+        ->name('report.poi');
+
+    // Report PA page
+    Route::view('report/pa', 'report-pa')
+        ->middleware(['role:coordinator'])
+        ->name('report.pa');
+
     // Report page
     Route::view('report', 'report')
         ->middleware(['role:contributor'])
@@ -28,33 +43,28 @@ Route::middleware(['auth', 'approved'])->group(function () {
 
     // Verify PA Report page
     Route::view('verify/pa', 'verify-pa')
-        ->middleware(['role:curator|coordinator'])
+        ->middleware(['role:curator'])
         ->name('verify.pa');
 
     // view verify PA report
     Route::view('verify/pa/view', 'verify-pa-view')
-        ->middleware(['role:curator|coordinator'])
+        ->middleware(['role:curator'])
         ->name('verify.pa.view');
 
     // Verify POI Report page
     Route::view('verify/poi', 'verify-poi')
-        ->middleware(['role:curator|coordinator'])
+        ->middleware(['role:curator'])
         ->name('verify.poi');
 
     // view verify POI report
     Route::view('verify/poi/view', 'verify-poi-view')
-        ->middleware(['role:curator|coordinator'])
+        ->middleware(['role:curator'])
         ->name('verify.poi.view');
 
     // // Manage Location page
     // Route::get('location/manage', function () {
     //     return 'This page for manage location';
     // })->middleware(['role:coordinator|admin']);
-
-    // Manage Project page
-    Route::view('project/manage', 'project')
-        ->middleware('role:coordinator')
-        ->name('project.manage');
 
     // Map
     Route::view('map', 'map')

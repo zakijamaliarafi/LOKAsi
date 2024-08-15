@@ -39,6 +39,33 @@ new class extends Component
         @endrole
 
         @role('coordinator')
+        <div class="my-5">
+            <x-dropdown align="right" width="48">
+                <x-slot name="trigger">
+                    <button class="inline-flex items-center py-2 text-lg leading-4 font-medium rounded-md text-black  hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <img class="h-8 mr-2" src="{{ asset('img/verify-icon.svg')}}" alt="">
+                        <div x-data="{{ json_encode(['name' => 'Manage Report']) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+
+                        <div class="ms-1">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </button>
+                </x-slot>
+
+                <x-slot name="content">
+                    <x-dropdown-link :href="route('report.poi')" wire:navigate>
+                        {{ __('POI Report') }}
+                    </x-dropdown-link>
+
+                    <x-dropdown-link :href="route('report.pa')" wire:navigate>
+                        {{ __('Point Addressing Report') }}
+                    </x-dropdown-link>
+                </x-slot>
+            </x-dropdown>
+        </div>
+
         <x-nav-link :href="route('project.manage')" :active="request()->routeIs('project.manage')" class="my-5" wire:navigate>
             <div class="flex justify-center items-center">
                 <img class="h-8" src="{{ asset('img/project-icon.svg')}}" alt="">
@@ -56,7 +83,7 @@ new class extends Component
         </x-nav-link>
         @endrole
 
-        @role('curator|coordinator')
+        @role('curator')
         <div class="my-5">
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">

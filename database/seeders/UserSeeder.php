@@ -34,8 +34,8 @@ class UserSeeder extends Seeder
         $coordinator->assignRole('coordinator');
 
         $curator = User::create([
-            'name' => 'Curator',
-            'email' => 'curator@gmail.com',
+            'name' => 'Curator A',
+            'email' => 'curatora@gmail.com',
             'address' => 'Pabuaran, Purwokerto Utara',
             'phone' => '081234567890',
             'password' => bcrypt('12345678'),
@@ -56,5 +56,45 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
         $user->assignRole('user');
+
+        $curator = User::create([
+            'name' => 'Curator B',
+            'email' => 'curatorb@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $curator->assignRole('curator');
+
+        $curator = User::create([
+            'name' => 'Curator C',
+            'email' => 'curatorc@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $curator->assignRole('curator');
+
+        $curator = User::create([
+            'name' => 'Curator D',
+            'email' => 'curatord@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $curator->assignRole('curator');
+
+        $curator = User::create([
+            'name' => 'Curator E',
+            'email' => 'curatore@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $curator->assignRole('curator');
     }
 }
