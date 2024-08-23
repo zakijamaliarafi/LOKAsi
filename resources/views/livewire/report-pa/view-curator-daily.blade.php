@@ -58,10 +58,8 @@ new class extends Component {
 
         $csvData2 = fopen('php://temp', 'r+');
         fputcsv($csvData2, ['ID', 'Status', 'Reject Reason', 'Street Name', 'Street Name Status', 'House Number', 'House Number Status', 'House Number Update', 'latitude', 'longitude', 'Curate Time', 'Curator']);
-        $date = $this->date;
         $poiData = DB::table('reports_pa')
             ->join('users as curators', 'reports_pa.curator_id', '=', 'curators.id')
-            ->whereDate('reports_pa.curate_time', $date)
             ->select(
                 'reports_pa.*',
                 'curators.name as curator_name',

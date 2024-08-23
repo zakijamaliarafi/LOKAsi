@@ -23,26 +23,31 @@ new class extends Component {
             ->select(
                 'users.id as curator_id',
                 'users.name as curator_name',
-                DB::raw('MAX(reports_pa.claim_time_end) as latest_claim_time_end')
+                DB::raw('MAX(GREATEST(
+                    COALESCE(curate_time, "1970-01-01 00:00:00"),
+                    COALESCE(claim_time_start, "1970-01-01 00:00:00"),
+                    COALESCE(claim_time_end, "1970-01-01 00:00:00")
+                )) AS latest_activity')
             )
             ->whereNotNull('reports_pa.curator_id')
             ->groupBy('users.id', 'users.name')
             ->get();
 
         foreach ($this->result as $row) {
-            $latestDate = Carbon::parse($row->latest_claim_time_end)->toDateString();
+            // $latestDate = Carbon::parse($row->latest_claim_time_end)->toDateString();
             
             $counts = DB::table('reports_pa')
                 ->where('curator_id', $row->curator_id)
-                ->whereDate('claim_time_end', $latestDate)
                 ->selectRaw('
                     SUM(CASE WHEN status = "accepted" THEN 1 ELSE 0 END) as accepted_count,
-                    SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as rejected_count
+                    SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) as rejected_count,
+                    SUM(CASE WHEN claim_id IS NOT NULL THEN 1 ELSE 0 END) as claimed_count
                 ')
                 ->first();
             
             $row->accepted_count = $counts->accepted_count;
             $row->rejected_count = $counts->rejected_count;
+            $row->claimed_count = $counts->claimed_count;
         }
         // dd($result);
     }
@@ -95,8 +100,9 @@ new class extends Component {
                             <th class="py-1 px-2 pl-5">No</th>
                             <th class="py-1 px-2">Curator</th>
                             <th class="py-1 px-2">Last activity</th>
-                            <th class="py-1 px-2">Accepted Data</th>
-                            <th class="py-1 px-2">Rejected Data</th>
+                            <th class="py-1 px-2">Total Accepted</th>
+                            <th class="py-1 px-2">Total Rejected</th>
+                            <th class="py-1 px-2">Total Claimed Data</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,9 +111,10 @@ new class extends Component {
                                 <tr class="bg-white shadow-md">
                                     <td class="text-indigo py-1 px-2 pl-5">{{ $loop->iteration }}</td>
                                     <td class="text-indigo py-1 px-2">{{ $data->curator_name }}</td>
-                                    <td class="text-indigo py-1 px-2">{{ $data->latest_claim_time_end }}</td>
+                                    <td class="text-indigo py-1 px-2">{{ $data->latest_activity }}</td>
                                     <td class="text-green-700 py-1 px-2 text-center">{{ $data->accepted_count }}</td>
                                     <td class="text-red-700 py-1 px-2 text-center">{{ $data->rejected_count }}</td>
+                                    <td class="text-yellow-700 py-1 px-2 text-center">{{ $data->claimed_count }}</td>
                                 </tr>
                             @endforeach
                         @endif

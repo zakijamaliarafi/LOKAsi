@@ -61,12 +61,9 @@ new class extends Component {
 
         $csvData2 = fopen('php://temp', 'r+');
         fputcsv($csvData2, ['ID', 'Status', 'Reject Reason', 'Location Name', 'Location Address', 'Category', 'latitude', 'longitude', 'image', 'Input Time', 'Contributor', 'Curate Time', 'Curator']);
-        $dateObj = Carbon::createFromFormat('Y-m', $this->date);
         $poiData = DB::table('reports_poi')
             ->leftjoin('users as curators', 'reports_poi.curator_id', '=', 'curators.id')
             ->join('users as contributors', 'reports_poi.contributor_id', '=', 'contributors.id')
-            ->whereYear('reports_poi.created_at', $dateObj->year)
-            ->whereMonth('reports_poi.created_at', $dateObj->month)
             ->select(
                 'reports_poi.*',
                 'curators.name as curator_name',

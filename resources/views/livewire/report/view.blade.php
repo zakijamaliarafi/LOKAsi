@@ -17,10 +17,10 @@ new class extends Component {
 
     public function getInfo(): void
     {
-        $this->totalCount = POI::where('contributor_id', Auth::id())->whereDate('input_time', now()->toDateString())->count();
-        $this->acceptedCount = POI::where('contributor_id', Auth::id())->whereDate('input_time', now()->toDateString())->where('status', 'accepted')->count();
-        $this->rejectedCount = POI::where('contributor_id', Auth::id())->whereDate('input_time', now()->toDateString())->where('status', 'rejected')->count();
-        $this->pendingCount = POI::where('contributor_id', Auth::id())->whereDate('input_time', now()->toDateString())->where('status', 'pending')->count();
+        $this->totalCount = POI::where('contributor_id', Auth::id())->count();
+        $this->acceptedCount = POI::where('contributor_id', Auth::id())->where('status', 'accepted')->count();
+        $this->rejectedCount = POI::where('contributor_id', Auth::id())->where('status', 'rejected')->count();
+        $this->pendingCount = POI::where('contributor_id', Auth::id())->where('status', 'pending')->count();
 
         $this->reportData = POI::where('contributor_id', Auth::id())
             ->get();
@@ -31,7 +31,7 @@ new class extends Component {
     <div class="my-10 mx-5">
         <div class="flex gap-x-5">
             <div class="px-2 py-2 bg-flash-white rounded-lg">
-                <p class="text-md text-indigo font-bold">Total Report Today</p>
+                <p class="text-md text-indigo font-bold">Total Report</p>
                 <p>{{$totalCount}}</p>
             </div>
             <div class="px-2 py-2 bg-flash-white rounded-lg">
