@@ -41,39 +41,46 @@ new class extends Component {
     
 }; ?>
 
-<div class="mt-5">
-    <table class="text-left">
-        <thead>
-            <tr>
-                <th class="w-24">No</th>
-                <th class="w-48">User</th>
-                <th class="w-64">Email</th>
-                <th class="w-64">Address</th>
-                <th class="w-64">Comunity</th>
-                <th class="w-48">Role Request</th>
-                <th class="w-36">Edit Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($users as $user)
-                <tr>    
-                    <td class="">{{ $loop->iteration}}</td>
-                    <td class="">{{ $user->name }}</td>
-                    <td class="">{{ $user->email }}</td>
-                    <td class="">{{ $user->address }}</td>
-                    <td class="">{{ $user->comunity ?? '-' }}</td>
-                    <td class="">{{ $user->role_request }}</td>
-                    @if($user->is($editing))
-                        <td class="">
-                            <livewire:user.edit :user="$user" :key="$user->id" />
-                        </td>
-                    @else
-                        <td class="">
-                            <button wire:click="edit({{$user->id}})">edit role</button>
-                        </td>
-                    @endif
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+<div class="pt-4">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="px-0 text-gray-900">
+                <table class="text-left border-separate border-spacing-x-0 border-spacing-y-2">
+                    <thead>
+                        <tr class="text-indigo font-semibold bg-flash-white">
+                            <th class="py-1 px-2 pl-5">No</th>
+                            <th class="py-1 px-2">User</th>
+                            <th class="py-1 px-2">Email</th>
+                            <th class="py-1 px-2 max-w-72">Address</th>
+                            <th class="py-1 px-2">Comunity</th>
+                            <th class="py-1 px-2">Role Request</th>
+                            <th class="py-1 px-2">Edit Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($users as $user)
+                            <tr>    
+                                <td class="py-1 px-2 pl-5">{{ $loop->iteration}}</td>
+                                <td class="py-1 px-2">{{ $user->name }}</td>
+                                <td class="py-1 px-2">{{ $user->email }}</td>
+                                <td class="py-1 px-2 max-w-72">{{ $user->address }}</td>
+                                <td class="py-1 px-2">{{ $user->comunity ?? '-' }}</td>
+                                <td class="py-1 px-2">{{ $user->role_request }}</td>
+                                @if($user->is($editing))
+                                    <td>
+                                        <livewire:user.edit :user="$user" :key="$user->id" />
+                                    </td>
+                                @else
+                                    <td class="py-1 px-2">
+                                        <button wire:click="edit({{$user->id}})">edit role</button>
+                                    </td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            
+            </div>
+        </div>
+    </div>
 </div>

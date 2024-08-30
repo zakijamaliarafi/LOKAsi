@@ -104,52 +104,52 @@ new class extends Component {
 
     <div class="pt-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="px-0 py-6 text-gray-900">
-                    <table class="text-left">
+            <div class="verflow-hidden shadow-sm sm:rounded-lg">
+                <div class="px-0 text-gray-900">
+                    <table class="text-left border-separate border-spacing-x-0 border-spacing-y-2">
                         <thead>
-                            <tr>
-                                <th class="w-24">No</th>
-                                <th class="w-48">User</th>
-                                <th class="w-24">Role</th>
-                                <th class="w-64">Email</th>
-                                <th class="w-64">Address</th>
-                                <th class="w-24">Edit Role</th>
-                                <th class="w-24">Action</th>
+                            <tr class="text-indigo font-semibold bg-flash-white">
+                                <th class="py-1 px-2 pl-5">No</th>
+                                <th class="py-1 px-2">User</th>
+                                <th class="py-1 px-2">Role</th>
+                                <th class="py-1 px-2">Email</th>
+                                <th class="py-1 px-2">Address</th>
+                                <th class="py-1 px-2">Edit Role</th>
+                                <th class="py-1 px-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
-                                <tr>    
-                                        <td class="">{{ $loop->iteration}}</td>
+                                <tr class="bg-white shadow-md">    
+                                        <td class="text-indigo py-1 px-2 pl-5">{{ $loop->iteration}}</td>
                                     @if($user->suspend)
-                                        <td class="">{{ $user->name }}</td>
-                                        <td class="">-</td>
-                                        <td class="">{{ $user->email }}</td>
-                                        <td class="">{{ $user->address }}</td>
-                                        <td class="">-</td>
-                                        <td class="">
+                                        <td class="text-indigo py-1 px-2">{{ $user->name }}</td>
+                                        <td class="text-indigo py-1 px-2">-</td>
+                                        <td class="text-indigo py-1 px-2">{{ $user->email }}</td>
+                                        <td class="text-indigo py-1 px-2 max-w-72">{{ $user->address }}</td>
+                                        <td class="text-indigo py-1 px-2">-</td>
+                                        <td class="text-green-700 py-1 px-2 text-center">
                                             <button wire:click="suspendUser({{$user->id}})">activate</button>
                                         </td>
                                     @else
-                                        <td class="">{{ $user->name }}</td>
-                                        <td class="">
+                                        <td class="text-indigo py-1 px-2">{{ $user->name }}</td>
+                                        <td class="text-indigo py-1 px-2">
                                             {{ $user->roles->pluck('name')->map(function($role) {
                                                 return $role === 'user' ? 'viewer' : $role;
                                             })->join(', ') }}
                                         </td>
-                                        <td class="">{{ $user->email }}</td>
-                                        <td class="">{{ $user->address }}</td>
+                                        <td class="text-indigo py-1 px-2">{{ $user->email }}</td>
+                                        <td class="text-indigo py-1 px-2 max-w-72">{{ $user->address }}</td>
                                         @if($user->is($editing))
-                                            <td class="">
+                                            <td >
                                                 <livewire:user.edit :user="$user" :key="$user->id" />
                                             </td>
                                         @else
-                                            <td class="">
+                                            <td class="text-indigo py-1 px-2">
                                                 <button wire:click="edit({{$user->id}})">edit role</button>
                                             </td>
                                         @endif
-                                        <td class="">
+                                        <td class="text-red-700 py-1 px-2 text-center">
                                             <button wire:click="suspendUser({{$user->id}})">suspend</button>
                                         </td>
                                     @endif
@@ -176,16 +176,8 @@ new class extends Component {
     @endif
 
     @if($approval)
-    <div class="pt-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <button wire:click="back" class="inline-flex items-center justify-center px-4 py-1.5 bg-flash-white border border-transparent font-medium text-indigo rounded-lg tracking-widest hover:bg-light-blue hover:text-white focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Back</button>
-                    <livewire:user.approve />
-                </div>
-            </div>
-        </div>
-    </div>
+        <button wire:click="back" class="inline-flex items-center justify-center px-4 py-1.5 bg-flash-white border border-transparent font-medium text-indigo rounded-lg tracking-widest hover:bg-light-blue hover:text-white focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">Back</button>
+        <livewire:user.approve />      
     @endif
 
 </div>
