@@ -43,9 +43,39 @@ class UserSeeder extends Seeder
         ]);
         $curator->assignRole('curator');
 
-        User::factory()->count(5)->create()->each(function ($user) {
-            $user->assignRole('contributor');
-        });
+        // User::factory()->count(5)->create()->each(function ($user) {
+        //     $user->assignRole('contributor');
+        // });
+
+        $contributor = User::create([
+            'name' => 'Contributor A',
+            'email' => 'contributora@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $contributor->assignRole('contributor');
+
+        $contributor = User::create([
+            'name' => 'Contributor B',
+            'email' => 'contributorb@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $contributor->assignRole('contributor');
+
+        $contributor = User::create([
+            'name' => 'Contributor C',
+            'email' => 'contributorc@gmail.com',
+            'address' => 'Pabuaran, Purwokerto Utara',
+            'phone' => '081234567890',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+        ]);
+        $contributor->assignRole('contributor');
 
         $user = User::create([
             'name' => 'Zaki Jamali Arafi',

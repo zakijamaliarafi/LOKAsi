@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'approved' => \App\Http\Middleware\ApprovedUserMiddleware::class,
+            'agent_check' => \App\Http\Middleware\CheckUserAgent::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

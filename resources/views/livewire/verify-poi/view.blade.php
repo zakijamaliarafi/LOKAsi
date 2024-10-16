@@ -2,6 +2,7 @@
 
 use App\Models\POI;
 use Livewire\Volt\Component;
+use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -10,6 +11,7 @@ new class extends Component {
     public $locationAddress = null;
     public $category = null;
     public $rejectReason = null;
+    public $lat, $long = null;
 
     public function mount(): void
     {
@@ -55,9 +57,24 @@ new class extends Component {
     public function renderMap(): void
     {
         $this->dispatch('init-map', [
-            'latitude' => $this->data->latitude,
-            'longitude' => $this->data->longitude,
+            'latitude' => $this->data->img_latitude,
+            'longitude' => $this->data->img_longitude,
+            'name' => $this->data->location_name,
         ]);
+    }
+
+    #[On('update-coordinate')]
+    public function updateCoordinate($lat, $long): void
+    {
+        $this->lat = $lat;
+        $this->long = $long;
+        // dd($this->lat, $this->long);
+    }
+
+    public function resetCoordinate(): void {
+        $this->lat = null;
+        $this->long = null;
+        $this->renderMap();
     }
 
     public function resetForm(): void
@@ -94,6 +111,10 @@ new class extends Component {
 
         if($this->locationAddress !== null) {
             $this->data->location_address = $this->locationAddress;
+        }
+        if(($this->lat && $this->long) !== null) {
+            $this->data->new_latitude = $this->lat;
+            $this->data->new_longitude = $this->long;
         }
         $this->data->category = $this->category;
         $this->data->status = 'accepted';
@@ -143,13 +164,17 @@ new class extends Component {
                 <div class="pt-2 pl-10">
                     <span class="text-lg text-indigo font-bold">Location name:</span> <span class="text-lg text-gray-700">{{ $data->location_name }}</span> 
                 </div>
+
+                <div class="pt-2 pl-10 max-w-md">
+                    <span class="text-lg text-indigo font-bold">Location info:</span> <span class="text-lg text-gray-700">{{ $data->location_info }}</span> 
+                </div>
     
                 <div class="pt-2 pl-10">
                     <label for="location_address" class="block text-lg text-indigo font-bold">Location Address</label>
-                    <input id="location_address" type="text" wire:model="LocationAddress" class="h-8 w-80 text-base">
+                    <input id="location_address" type="text" wire:model="locationAddress" class="h-8 w-80 text-base">
                 </div>
                 <div class="pl-10 text-red-500">
-                    @error('LocationAddress')
+                    @error('locationAddress')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -268,8 +293,10 @@ new class extends Component {
             </form>
         </div>
 
-        <div class="h-60 w-full">
-            <div id="map" class="h-full"></div>
+        <div class="w-full mb-5">
+            <div id="map" class="h-60 mb-2" wire:ignore></div>
+            <x-secondary-button type="button" wire:click="resetCoordinate" class="text-base rounded-lg px-5 py-3 ml-2">Reset</x-secondary-button>
+            <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint={{$this->data->img_latitude}},{{$this->data->img_longitude}}" target="_blank"><x-secondary-button type="button" wire:click="resetCoordinate" class="text-base rounded-lg px-5 py-3 ml-2">Open Streetview</x-secondary-button></a>
         </div>
 
     </div>
@@ -288,13 +315,14 @@ new class extends Component {
     <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
         ({key: apikey, v: "weekly"});</script>
 
+@script
 <script>
     window.addEventListener('init-map', event => {
-        console.log('Event:', event);
+        // console.log('Event:', event);
         // Extract latitude, longitude, and name from event detail
         const { latitude, longitude, name } = event.detail[0];
         
-        console.log(latitude, longitude, name);
+        // console.log(latitude, longitude, name);
         // Convert latitude and longitude to numbers
         const lat = parseFloat(latitude);
         const lng = parseFloat(longitude);
@@ -315,13 +343,14 @@ new class extends Component {
 
         // Request needed libraries.
         //@ts-ignore
-        const { Map } = await google.maps.importLibrary("maps");
+        const { Map} = await google.maps.importLibrary("maps");
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
         // The map, centered at the position
         const map = new Map(document.getElementById("map"), {
             zoom: 18,
             center: position,
+            streetViewControl: false,
             mapId: "DEMO_MAP_ID",
         });
 
@@ -329,9 +358,16 @@ new class extends Component {
         const marker = new AdvancedMarkerElement({
             map: map,
             position: position,
+            gmpDraggable: true,
             title: name,
         });
+
+        marker.addListener("dragend", (event) => {
+            const position = marker.position;
+            $wire.dispatch('update-coordinate', { lat: position.lat, long: position.lng });
+        });
+
     }
 </script>
-
+@endscript
 </div>

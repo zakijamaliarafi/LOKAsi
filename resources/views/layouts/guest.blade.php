@@ -20,14 +20,18 @@
     <body class="font-poppins text-gray-900 antialiased">
         <div class="min-h-screen flex flex-row">
             @if(isset($image))
-            <div class="w-1/2">
-                {{ $image }}
-            </div>
-            @endif
+                <div class="w-1/2">
+                    {{ $image }}
+                </div>
 
-            <div class="w-1/2">
-                {{ $slot }}
-            </div>
+                <div class="w-1/2">
+                    {{ $slot }}
+                </div>
+            @else
+                <div class="w-full">
+                    {{ $slot }}
+                </div>
+            @endif
         </div>
     </body>
 </html>

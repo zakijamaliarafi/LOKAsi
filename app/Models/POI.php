@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Database\Factories\POIFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class POI extends Model
@@ -26,11 +28,17 @@ class POI extends Model
         'status',
         'reject_reason',
         'location_name',
+        'location_info',
+        'img_latitude',
+        'img_longitude',
+        'img_altitude',
+        'img_time',
         'location_address',
         'category',
         'latitude',
         'longitude',
         'image_path',
+        'input_time',
         'claim_id',
         'claim_time_start',
         'claim_time_end',
@@ -42,5 +50,10 @@ class POI extends Model
     public function contributor()
     {
         return $this->belongsTo(User::class, 'contributor_id');
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return POIFactory::new();
     }
 }

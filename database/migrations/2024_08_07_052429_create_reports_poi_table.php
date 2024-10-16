@@ -16,18 +16,26 @@ return new class extends Migration
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->string('reject_reason')->nullable();
             $table->string('location_name');
+            $table->string('location_info')->nullable();
+            $table->string('img_latitude', 20)->nullable();
+            $table->string('img_longitude', 20)->nullable();
+            $table->string('img_altitude', 20)->nullable();
+            $table->datetime('img_time')->nullable();
             $table->string('location_address')->nullable();
             $table->string('category')->nullable();
             $table->string('latitude', 20);
             $table->string('longitude', 20);
             $table->string('image_path');
             $table->datetime('input_time');
+            $table->string('new_latitude', 20)->nullable();
+            $table->string('new_longitude', 20)->nullable();
             $table->ulid('claim_id')->nullable();
             $table->datetime('claim_time_start')->nullable();
             $table->datetime('claim_time_end')->nullable();
             $table->datetime('curate_time')->nullable();
             $table->foreignId('contributor_id')->constrained(table: 'users')->onUpdate('cascade');
             $table->foreignId('curator_id')->nullable()->constrained(table: 'users')->onUpdate('cascade');
+            $table->foreignUlid('payment_id')->nullable()->constrained(table: 'payments')->onUpdate('cascade');
             $table->timestamps();
         });
     }

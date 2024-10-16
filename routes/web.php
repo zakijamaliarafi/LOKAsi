@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth', 'approved'])->group(function () {
+Route::middleware(['auth', 'approved', 'agent_check'])->group(function () {
     // Home page
     Route::view('/', 'dashboard')
         ->name('home');
@@ -69,6 +69,29 @@ Route::middleware(['auth', 'approved'])->group(function () {
     // Map
     Route::view('map', 'map')
         ->name('map');
+});
+
+Route::prefix('m')->middleware(['auth', 'approved', 'role:contributor'])->group(function () {
+    // Home page
+    Route::view('/', 'mobile/dashboard')
+        ->name('mobile.home');
+
+    // Dashboard page
+    Route::view('dashboard', 'mobile/dashboard')
+        ->middleware(['verified'])
+        ->name('mobile.dashboard');
+
+    // Map
+    Route::view('map', 'mobile/map')
+        ->name('mobile.map');
+
+    // Payment Form
+    Route::view('payment', 'mobile/payment')
+        ->name('mobile.payment');
+
+    // Payment History
+    Route::view('history', 'mobile/history')
+        ->name('mobile.history');
 });
 
 require __DIR__.'/auth.php';
