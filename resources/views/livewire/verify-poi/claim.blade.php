@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\POI;
+use Livewire\Attributes\On;
 use Livewire\Volt\Component;
 
 new class extends Component {
@@ -29,6 +30,7 @@ new class extends Component {
 
         if ($claimedData->isEmpty()) {
             // warning message
+            $this->dispatch('message');
         } else {
             $this->claimId = Str::ulid()->toBase32();
             $curatorId = Auth::id();
@@ -58,6 +60,11 @@ new class extends Component {
 }; ?>
 
 <div>
+    <!-- Action Message Component Usage -->
+    <x-action-message on="message" class="bg-yellow-400 w-96 top-4 right-4 text-left">
+        {{ session('message', "Sorry, the POI data you want to request doesn't exist anymore.") }}
+    </x-action-message>
+
     @if($hasPendingData)
         <div class="bg-flash-white w-96 px-5 py-5 rounded-lg">
             <p class="text-lg text-indigo font-bold mb-10">List data to verify report</p>

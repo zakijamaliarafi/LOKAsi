@@ -136,8 +136,9 @@ new class extends Component {
             'contributor_id' => auth()->user()->id,
         ]);
 
-        session()->flash('message', 'Form submitted successfully!');
-        $this->reset(['location_name', 'file']);
+        // $this->reset(['location_name', 'file']);
+        $this->dispatch('close-add');
+        $this->dispatch('message');
     }
 }; ?>
 
@@ -150,8 +151,27 @@ new class extends Component {
             <div class="flex justify-center pb-10">
                 <div class="w-50">
                     <div class="mb-4">
-                        <label for="file" class="text-indigo text-xl font-semibold">Foto</label>
-                        <input type="file" id="file" capture="user" accept="image/*" wire:model="file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                        <label for="file-upload" class="cursor-pointer block">
+                            @if(!$file)
+                            <div class="relative bg-indigo rounded-lg py-16 flex flex-col items-center">
+                                <img src="{{ asset('img/camera.svg') }}" class="h-12">
+                                <span class="mt-1 text-sm text-white">Take photo</span>
+                            </div>
+                            @endif
+                            @if($file)
+                            <div class="flex justify-center">
+                                <img src="{{ $file->temporaryUrl() }}" class="mt-4 max-w-full max-h-48" alt="Image preview" />
+                            </div>
+                            @endif
+                            <input 
+                                id="file-upload" 
+                                type="file" 
+                                wire:model="file"
+                                capture="user" 
+                                accept="image/*" 
+                                class="hidden" 
+                            />
+                        </label>
                         @error('file') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
         
@@ -189,9 +209,13 @@ new class extends Component {
                     $wire.dispatch('send-address', {address: address});
                 } else {
                     console.log('Geocoding failed:', data.status);
+                    alert("Image location data does not exist, turn on location setting in camera app and retake the photo");
                 }
             })
             .catch(error => console.error('Error:', error));
     });
 </script>
 @endscript
+<script>
+    
+</script>

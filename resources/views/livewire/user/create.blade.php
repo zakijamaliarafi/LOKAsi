@@ -11,6 +11,7 @@ use Livewire\Volt\Component;
 new class extends Component {
     public string $name = '';
     public string $email = '';
+    public string $phone = '';
     public string $address = '';
     public string $password = '';
     public string $role = 'none';
@@ -20,6 +21,7 @@ new class extends Component {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'phone' => ['required', 'numeric'],
             'password' => ['required', 'string', Rules\Password::defaults()],
             'address' => ['required', 'string', 'max:255'],
         ]);
@@ -52,6 +54,13 @@ new class extends Component {
         <x-input-label for="email" :value="__('Email')" />
         <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
         <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    </div>
+
+    <!-- Phone Number -->
+    <div class="mt-4">
+        <x-input-label for="phone" :value="__('Phone Number')" />
+        <x-text-input wire:model="phone" id="phone" class="block mt-1 w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" type="tel" pattern="\d{10,13}" name="phone" required autocomplete="username" />
+        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
     </div>
 
     <!-- Address -->

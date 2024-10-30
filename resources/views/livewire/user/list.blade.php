@@ -3,13 +3,13 @@
 use App\Models\User;
 use App\Events\UserSuspended;
 use App\Events\UserActivated; 
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 use Livewire\Volt\Component;
 use Spatie\Permission\Models\Role;
 
 new class extends Component {
-    public Collection $users;
+    use WithPagination;
 
     public $list = true;
     public $creating = false;
@@ -19,15 +19,15 @@ new class extends Component {
 
     public function mount(): void
     {
-        $this->getUser();
+        // No need to call getUser() here
     }
 
-    public function getUser(): void
+    public function getUsers()
     {
-        $this->users = User::withoutRole('admin')
+        return User::withoutRole('admin')
             ->where('id', '!=', auth()->id())
             ->latest()
-            ->get();
+            ->paginate(10);
     }
 
     public function create(): void
@@ -42,14 +42,11 @@ new class extends Component {
     {
         $this->creating = false;
         $this->list = true;
-        $this->getUser();
     }
 
     public function edit(User $user): void
     {
         $this->editing = $user;
-
-        $this->getUser();
     }
 
     #[On('user-updated')]
@@ -57,7 +54,6 @@ new class extends Component {
     public function disableEditForm(): void
     {
         $this->editing = null;
-        $this->getUser();
     }
 
     public function suspendUser(User $user): void
@@ -67,31 +63,33 @@ new class extends Component {
                 'suspend' => false,
             ]);
 
-            // dispatch UserActivated event
             UserActivated::dispatch($user);
         } else {
             $user->update([
                 'suspend' => true,
             ]);
 
-            // dispatch UserSuspended event
             UserSuspended::dispatch($user);
         }
-
-        $this->getUser();
     }
 
     public function approve(): void
     {
         $this->list = false;
         $this->approval = true;
-        
     }
 
     public function back(): void
     {
         $this->approval = false;
         $this->list = true;
+    }
+
+    public function with(): array
+    {
+        return [
+            'users' => $this->getUsers(),
+        ];
     }
 }; ?>
 
@@ -157,6 +155,11 @@ new class extends Component {
                             @endforeach
                         </tbody>
                     </table>
+
+                    <div class="my-4">
+                        {{ $users->links() }}
+                    </div>
+
                 </div>
             </div>
         </div>

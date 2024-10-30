@@ -22,12 +22,23 @@ new class extends Component {
         $this->creating = true;
     }
 
+    #[On('close-add')]
+    public function closeAdd()
+    {
+        $this->creating = false;
+    }
     
 }; ?>
 
 <div class="h-[calc(100dvh)]">
     <div class="h-[calc(100dvh-5rem)] w-screen relative">
         <div id="map" class="h-full" wire:ignore></div>
+
+        <!-- Action Message Component Usage -->
+        <x-action-message on="message" class="bg-green-400 w-screen top-0 left-0 text-center">
+            {{ session('message', 'Your data has been saved!') }}
+        </x-action-message>
+        
         @if($creating)
             <livewire:map.add-mobile :latitude="$latitude" :longitude="$longitude"/> 
         @endif

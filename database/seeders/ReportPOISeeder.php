@@ -1565,6 +1565,6 @@ class ReportPOISeeder extends Seeder
             POI::create($report);
         }
 
-        POI::factory()->count(1000)->create();
+        // POI::factory()->count(1000)->create();
     }
 }

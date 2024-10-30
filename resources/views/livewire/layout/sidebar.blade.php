@@ -30,23 +30,29 @@ new class extends Component
         </x-nav-link>
 
         @role('admin')
-        <x-nav-link :href="route('user.manage')" :active="request()->routeIs('user.manage')" class="my-5" wire:navigate>
-            <div class="flex justify-center items-center gap-2">
+        <x-nav-link :href="route('user.manage')" :active="request()->routeIs('user.manage')" class="my-5 h-full" wire:navigate>
+            <div class="flex pl-3 items-center text-lg leading-5 gap-2">
                 <img class="h-8" src="{{ asset('img/manage-user-icon.svg')}}" alt="">
-                {{__('Manage User')}}
+                <div class="flex flex-col items-start">
+                    <span>{{ __('Manage') }}</span>
+                    <span>{{ __('User') }}</span>
+                </div>
             </div>
         </x-nav-link>
         @endrole
 
         @role('coordinator')
         <div class="my-5">
-            <x-dropdown align="right" width="48">
+            <x-dropdown width="48">
                 <x-slot name="trigger">
-                    <button class="inline-flex items-center py-2 text-lg leading-4 font-medium rounded-md text-black  hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                    <button class="inline-flex pl-5 items-center text-lg leading-5 text-black font-bold mx-auto">
                         <img class="h-8 mr-2" src="{{ asset('img/verify-icon.svg')}}" alt="">
-                        <div x-data="{{ json_encode(['name' => 'Manage Report']) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
+                        <div x-data="{{ json_encode(['name' => ['Manage', 'Report']]) }}" class="flex flex-col items-start">
+                            <span x-text="name[0]"></span>
+                            <span x-text="name[1]"></span>
+                        </div>
 
-                        <div class="ms-1">
+                        <div class="ml-6">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
@@ -66,10 +72,13 @@ new class extends Component
             </x-dropdown>
         </div>
 
-        <x-nav-link :href="route('project.manage')" :active="request()->routeIs('project.manage')" class="my-5" wire:navigate>
-            <div class="flex justify-center items-center">
+        <x-nav-link :href="route('project.manage')" :active="request()->routeIs('project.manage')" class="my-5 h-full" wire:navigate>
+            <div class="flex pl-3 items-center text-lg leading-5 gap-2">
                 <img class="h-8" src="{{ asset('img/project-icon.svg')}}" alt="">
-                {{ __('Manage Project') }}
+                <div class="flex flex-col items-start">
+                    <span>{{ __('Manage') }}</span>
+                    <span>{{ __('Project') }}</span>
+                </div>
             </div>
         </x-nav-link>
         @endrole
@@ -87,11 +96,13 @@ new class extends Component
         <div class="my-5">
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">
-                    <button class="inline-flex items-center pl-5 py-2 text-lg leading-4 font-medium rounded-md text-black  hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                    <button class="inline-flex pl-5 items-center text-lg leading-5 text-black font-bold mx-auto">
                         <img class="h-8 mr-2" src="{{ asset('img/verify-icon.svg')}}" alt="">
-                        <div x-data="{{ json_encode(['name' => 'Verify Report']) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
-
-                        <div class="ms-1">
+                        <div x-data="{{ json_encode(['name' => ['Verify', 'Report']]) }}" class="flex flex-col items-start">
+                            <span x-text="name[0]"></span>
+                            <span x-text="name[1]"></span>
+                        </div>
+                        <div class="ml-8">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
