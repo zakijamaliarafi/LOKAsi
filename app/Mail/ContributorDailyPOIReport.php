@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -16,14 +17,17 @@ class ContributorDailyPOIReport extends Mailable
 
     public $csvOutput;
     public $csvOutput2;
+    public $dateObj;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($csvOutput, $csvOutput2)
+    public function __construct($csvOutput, $csvOutput2, $dateObj)
     {
         $this->csvOutput = $csvOutput;
         $this->csvOutput2 = $csvOutput2;
+        $this->dateObj = Carbon::createFromFormat('Y-m-d', $dateObj)->format('d M Y');
+        // dd($this->$dateObj);
     }
 
     /**
@@ -54,9 +58,9 @@ class ContributorDailyPOIReport extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromData(fn () => $this->csvOutput, 'contributor_daily_poi_report.csv')
+            Attachment::fromData(fn () => $this->csvOutput, 'Contributor POI Report ' . $this->dateObj . '.csv')
                 ->withMime('text/csv'),
-            Attachment::fromData(fn () => $this->csvOutput2, 'poi_data.csv')
+            Attachment::fromData(fn () => $this->csvOutput2, 'POI Data Inputted on ' . $this->dateObj . '.csv')
                 ->withMime('text/csv'),
         ];
     }

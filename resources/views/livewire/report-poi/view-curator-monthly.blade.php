@@ -44,10 +44,10 @@ new class extends Component {
         )
         ->groupBy('users.id', 'users.name')
         ->get();
-        // dd($this->result);
     }
 
     public function send(){
+        $dateObj = Carbon::createFromFormat('Y-m', $this->date);
         $csvData = fopen('php://temp', 'r+');
         fputcsv($csvData, ['Curator', 'Accepted Data', 'Rejected Data']);
         foreach ($this->result as $data) {
@@ -58,7 +58,7 @@ new class extends Component {
         fclose($csvData);
 
         $csvData2 = fopen('php://temp', 'r+');
-        fputcsv($csvData2, ['ID', 'Status', 'Reject Reason', 'Location Name', 'Location Address', 'Category', 'latitude', 'longitude', 'image', 'Input Time', 'Contributor', 'Curate Time', 'Curator']);
+        fputcsv($csvData2, ['ID', 'Status', 'Reject Reason', 'Location Info', 'Location Name', 'Location Name Update', 'Street Name', 'Building Number', 'Category', 'latitude', 'longitude', 'image', 'image latitude', 'image longitude', 'image altitude', 'image time', 'Input Time', 'new latitude', 'new longitude', 'Claim ID', 'Claim Time Start', 'Claim Time End', 'Curate Time', 'Contributor', 'Curator']);
         $poiData = DB::table('reports_poi')
             ->join('users as curators', 'reports_poi.curator_id', '=', 'curators.id')
             ->join('users as contributors', 'reports_poi.contributor_id', '=', 'contributors.id')
@@ -67,16 +67,25 @@ new class extends Component {
                 'curators.name as curator_name',
                 'contributors.name as contributor_name'
             )
+            ->whereYear('reports_poi.curate_time', $dateObj->year)
+            ->whereMonth('reports_poi.curate_time', $dateObj->month)
             ->get();
         
         foreach ($poiData as $poi) {
-            fputcsv($csvData2, [$poi->id, $poi->status, $poi->reject_reason, $poi->location_name, $poi->location_address, $poi->category, $poi->latitude, $poi->longitude, $poi->image_path, $poi->input_time, $poi->contributor_name, $poi->curate_time, $poi->curator_name]); 
+            fputcsv($csvData2, [$poi->id, $poi->status, $poi->reject_reason, $poi->location_info, $poi->location_name, $poi->location_name_update,  $poi->street_name, $poi->building_number, $poi->category, $poi->latitude, $poi->longitude, $poi->image_path, $poi->img_latitude, $poi->img_longitude, $poi->img_altitude, $poi->img_time, $poi->input_time, $poi->new_latitude, $poi->new_longitude, $poi->claim_id, $poi->claim_time_start, $poi->claim_time_end, $poi->curate_time, $poi->contributor_name, $poi->curator_name]); 
         }
         rewind($csvData2);
         $csvOutput2 = stream_get_contents($csvData2);
         fclose($csvData2);
 
-        Mail::to('lokasi.terra@gmail.com')->send(new CuratorMonthlyPOIReport($csvOutput, $csvOutput2));
+        Mail::to('lokasi.terra@gmail.com')->send(new CuratorMonthlyPOIReport($csvOutput, $csvOutput2, $dateObj));
+
+        // Record the date when the mail report is sent
+        DB::table('mail_reports')->insert([
+            'coordinator_id' => Auth::id(),
+            'report_type' => 'Curator Monthly POI Report',
+            'sent_at' => now(),
+        ]);
     }
 
 }; ?>

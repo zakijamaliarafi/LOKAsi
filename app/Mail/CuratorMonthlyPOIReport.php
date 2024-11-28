@@ -16,14 +16,16 @@ class CuratorMonthlyPOIReport extends Mailable
 
     public $csvOutput;
     public $csvOutput2;
+    public $dateObj;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($csvOutput, $csvOutput2)
+    public function __construct($csvOutput, $csvOutput2, $dateObj)
     {
         $this->csvOutput = $csvOutput;
         $this->csvOutput2 = $csvOutput2;
+        $this->dateObj = $dateObj->format('M Y');
     }
 
     /**
@@ -54,9 +56,9 @@ class CuratorMonthlyPOIReport extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromData(fn () => $this->csvOutput, 'curator_monthly_poi_report.csv')
+            Attachment::fromData(fn () => $this->csvOutput, 'Curator POI Report ' . $this->dateObj . '.csv')
                 ->withMime('text/csv'),
-            Attachment::fromData(fn () => $this->csvOutput2, 'poi_data.csv')
+            Attachment::fromData(fn () => $this->csvOutput2, 'POI Data Curated on ' . $this->dateObj . '.csv')
                 ->withMime('text/csv'),
         ];
     }
