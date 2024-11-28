@@ -8,7 +8,9 @@ use Illuminate\Validation\Rule;
 
 new class extends Component {
     public POI $data;
-    public $locationAddress = null;
+    public $locationNameUpdate;
+    public $streetName = null;
+    public $buildingNumber = null;
     public $category = null;
     public $rejectReason = null;
     public $lat, $long = null;
@@ -33,6 +35,7 @@ new class extends Component {
 
         if ($report) {
             $this->data = $report;
+            $this->locationNameUpdate = $this->data->location_name;
             $this->resetForm();
         } else {
             $hasNullClaimTimeEnd = POI::whereNull('claim_time_end')
@@ -57,14 +60,14 @@ new class extends Component {
     public function renderMap(): void
     {
         $this->dispatch('init-map', [
-            'latitude' => $this->data->img_latitude,
-            'longitude' => $this->data->img_longitude,
+            'latitude' => $this->data->new_latitude ?? $this->data->img_latitude,
+            'longitude' => $this->data->new_longitude ?? $this->data->img_longitude,
             'name' => $this->data->location_name,
         ]);
     }
 
-    #[On('update-coordinate')]
-    public function updateCoordinate($lat, $long): void
+    #[On('update-marker-position')]
+    public function updateMarkerPosition($lat, $long): void
     {
         $this->lat = $lat;
         $this->long = $long;
@@ -74,13 +77,39 @@ new class extends Component {
     public function resetCoordinate(): void {
         $this->lat = null;
         $this->long = null;
+        $this->data->new_latitude = null;
+        $this->data->new_longitude = null;
+        $this->data->save();
         $this->renderMap();
+    }
+
+    public function updateLocation(): void
+    {
+        // dd($this->long);
+        if ($this->lat !== null && $this->long !== null) {
+            $this->data->new_latitude = $this->lat;
+            $this->data->new_longitude = $this->long;
+            $this->data->save();
+
+            $this->dispatch('get-address', ['lat' => $this->lat, 'lng' => $this->long]);
+            
+            // success notification
+            $this->dispatch('update-succes-message');
+        } else {
+            $this->dispatch('marker-not-move');
+        }
+    }
+
+    #[On('update-address-info')]
+    public function updateAddressInfo($address) {
+        $this->data->location_info = $address;
+        $this->data->save();
     }
 
     public function resetForm(): void
     {
         $this->resetErrorBag();
-        $this->locationAddress = null;
+        $this->streetName = null;
         $this->category = null;
         $this->rejectReason = null;
     }
@@ -89,11 +118,14 @@ new class extends Component {
     {
         $validator = Validator::make(
             [
-                'locationAddress' => $this->locationAddress,
+                'locationNameUpdate' => $this->locationNameUpdate,
+                'streetName' => $this->streetName,
+                'buildingNumber' => $this->buildingNumber,
                 'category' => $this->category,
                 'rejectReason' => $this->rejectReason,
             ],
             [
+                'locationNameUpdate' => 'required',
                 'category' => 'required',
                 'rejectReason' => 'prohibited',
             ],
@@ -109,13 +141,21 @@ new class extends Component {
             return;
         }
 
-        if($this->locationAddress !== null) {
-            $this->data->location_address = $this->locationAddress;
+        if (trim($this->locationNameUpdate) != $this->data->location_name) {
+            $this->data->location_name_update = $this->locationNameUpdate;
+        }
+        
+        if($this->streetName !== null) {
+            $this->data->street_name = $this->streetName;
+        }
+        if($this->buildingNumber !== null) {
+            $this->data->building_number = $this->buildingNumber;
         }
         if(($this->lat && $this->long) !== null) {
             $this->data->new_latitude = $this->lat;
             $this->data->new_longitude = $this->long;
         }
+
         $this->data->category = $this->category;
         $this->data->status = 'accepted';
         $this->data->curate_time = now();
@@ -154,27 +194,44 @@ new class extends Component {
 }; ?>
 
 <div class="flex">
+    <x-action-message on="update-succes-message" class="bg-green-400 w-96 top-4 right-4 text-left">
+        {{ session('message', "Location updated!") }}
+    </x-action-message>
+    <x-action-message on="marker-not-move" class="bg-yellow-400 w-96 top-4 right-4 text-left">
+        {{ session('message', "you need to move marker to update location") }}
+    </x-action-message>
     <div class="w-1/2">
         <div class="w-full bg-white">
             <form wire:submit.prevent>
                 <div class="mt-2 pl-10">
                     <span class="text-xl text-indigo font-bold">Report From:</span> <span class="text-xl text-gray-700">{{ $data->contributor->name }}</span>
                 </div>
-    
-                <div class="pt-2 pl-10">
-                    <span class="text-lg text-indigo font-bold">Location name:</span> <span class="text-lg text-gray-700">{{ $data->location_name }}</span> 
-                </div>
 
                 <div class="pt-2 pl-10 max-w-md">
                     <span class="text-lg text-indigo font-bold">Location info:</span> <span class="text-lg text-gray-700">{{ $data->location_info }}</span> 
                 </div>
+
+                <div class="pt-2 pl-10">
+                    <label for="location_name" class="block text-lg text-indigo font-bold">Location name:</label>
+                    <input id="location_name" type="text" wire:model="locationNameUpdate" class="h-8 w-80 text-base">
+                </div>
     
                 <div class="pt-2 pl-10">
-                    <label for="location_address" class="block text-lg text-indigo font-bold">Location Address</label>
-                    <input id="location_address" type="text" wire:model="locationAddress" class="h-8 w-80 text-base">
+                    <label for="street_name" class="block text-lg text-indigo font-bold">Street Name</label>
+                    <input id="street_name" type="text" wire:model="streetName" class="h-8 w-80 text-base">
                 </div>
                 <div class="pl-10 text-red-500">
-                    @error('locationAddress')
+                    @error('streetName')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="pt-2 pl-10">
+                    <label for="building_number" class="block text-lg text-indigo font-bold">Building Number</label>
+                    <input id="building_number" type="text" wire:model="buildingNumber" class="h-8 w-80 text-base">
+                </div>
+                <div class="pl-10 text-red-500">
+                    @error('buildingNumber')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -296,7 +353,16 @@ new class extends Component {
         <div class="w-full mb-5">
             <div id="map" class="h-60 mb-2" wire:ignore></div>
             <x-secondary-button type="button" wire:click="resetCoordinate" class="text-base rounded-lg px-5 py-3 ml-2">Reset</x-secondary-button>
-            <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint={{$this->data->img_latitude}},{{$this->data->img_longitude}}" target="_blank"><x-secondary-button type="button" wire:click="resetCoordinate" class="text-base rounded-lg px-5 py-3 ml-2">Open Streetview</x-secondary-button></a>
+            <a href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint={{$this->lat ?? $this->data->img_latitude}},{{$this->long ?? $this->data->img_longitude}}" 
+                wire:key="streetview-link-{{$this->lat}}-{{$this->long}}"
+                target="_blank">
+                 <x-secondary-button type="button" class="text-base rounded-lg px-5 py-3 ml-2">
+                     Open Streetview
+                 </x-secondary-button>
+             </a>
+             <x-secondary-button type="button" wire:click="updateLocation" class="text-base rounded-lg px-5 py-3 ml-2">
+                Update Location
+            </x-secondary-button>
         </div>
 
     </div>
@@ -364,10 +430,34 @@ new class extends Component {
 
         marker.addListener("dragend", (event) => {
             const position = marker.position;
-            $wire.dispatch('update-coordinate', { lat: position.lat, long: position.lng });
+            $wire.dispatch('update-marker-position', { lat: position.lat, long: position.lng });
         });
 
     }
+
+    $wire.on('get-address', (data) => {
+        var lat = data[0]['lat'];
+        var lng = data[0]['lng'];
+        var apikey = config.MAP_API_KEY;
+        // console.log(lat);
+        // console.log(lng);
+        // console.log(apikey);
+
+        const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=street_address&key=${apikey}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'OK') {
+                    const address = data.results[0].formatted_address;
+                    // console.log('Address:', address);
+                    $wire.dispatch('update-address-info', {address: address});
+                } else {
+                    console.log('Geocoding failed:', data.status);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
 </script>
 @endscript
 </div>
